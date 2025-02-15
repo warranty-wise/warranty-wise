@@ -1,0 +1,27 @@
+# Dependency directories
+node_modules
+
+# Production build output
+.next
+out
+build
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor and IDE files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Environment variables file
+.env*.local
+.env.*
+!/env.example
+
+# Temporary files
+tmp
