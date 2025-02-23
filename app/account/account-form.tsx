@@ -8,33 +8,34 @@ import { type User } from '@supabase/supabase-js'
 export default function AccountForm({ user }: { user: User | null }) {
   const supabase = createClient()
   const [loading, setLoading] = useState(true)
-  const [fullname, setFullname] = useState<string | null>(null)
-  const [username, setUsername] = useState<string | null>(null)
-  const [website, setWebsite] = useState<string | null>(null)
-  const [avatar_url, setAvatarUrl] = useState<string | null>(null)
+  const [name, setName] = useState<string | null>(null)
+  const [email, setEmail] = useState<string | null>(null)
+  const [address, setAddress] = useState<string | null>(null)
 
   const getProfile = useCallback(async () => {
     try {
       setLoading(true)
 
+      console.log('Fetching profile for user:', user);
+
+
       const { data, error, status } = await supabase
         .from('profiles')
-        .select(`full_name, username, website, avatar_url`)
-        .eq('id', user?.id)
+        .select(`name, email, address`)
+        .eq('user_id', user?.id)
         .single()
 
       if (error && status !== 406) {
-        console.log(error)
         throw error
       }
 
       if (data) {
-        setFullname(data.full_name)
-        setUsername(data.username)
-        setWebsite(data.website)
-        setAvatarUrl(data.avatar_url)
+        setName(data.name)
+        setEmail(data.email)
+        setAddress(data.address)
       }
     } catch (error) {
+      console.error('Error loading user data:', error)
       alert('Error loading user data!')
     } finally {
       setLoading(false)
@@ -46,29 +47,30 @@ export default function AccountForm({ user }: { user: User | null }) {
   }, [user, getProfile])
 
   async function updateProfile({
-    username,
-    website,
-    avatar_url,
+    email,
+    name,
+    address,
   }: {
-    username: string | null
-    fullname: string | null
-    website: string | null
-    avatar_url: string | null
+    email: string | null
+    name: string | null
+    address: string | null
   }) {
     try {
       setLoading(true)
 
       const { error } = await supabase.from('profiles').upsert({
-        id: user?.id as string,
-        full_name: fullname,
-        username,
-        website,
-        avatar_url,
+        user_id: user?.id as string,
+        name: name,
+        email: user?.email, 
+        address,
         updated_at: new Date().toISOString(),
       })
-      if (error) throw error
+      if (error) {
+        throw error
+      }
       alert('Profile updated!')
     } catch (error) {
+      console.error('Error updating the data:', error)
       alert('Error updating the data!')
     } finally {
       setLoading(false)
@@ -89,33 +91,24 @@ export default function AccountForm({ user }: { user: User | null }) {
         <input
           id="fullName"
           type="text"
-          value={fullname || ''}
-          onChange={(e) => setFullname(e.target.value)}
+          value={name || ''}
+          onChange={(e) => setName(e.target.value)}
         />
       </div>
       <div>
-        <label htmlFor="username">Username</label>
+        <label htmlFor="address">address</label>
         <input
-          id="username"
-          type="text"
-          value={username || ''}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="website">Website</label>
-        <input
-          id="website"
+          id="address"
           type="url"
-          value={website || ''}
-          onChange={(e) => setWebsite(e.target.value)}
+          value={address || ''}
+          onChange={(e) => setAddress(e.target.value)}
         />
       </div>
 
       <div>
         <button
           className="button primary block"
-          onClick={() => updateProfile({ fullname, username, website, avatar_url })}
+          onClick={() => updateProfile({ name, email, address })}
           disabled={loading}
         >
           {loading ? 'Loading ...' : 'Update'}
