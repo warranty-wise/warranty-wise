@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
+import { redirect } from 'next/navigation'
 
 export default function Home() {
     const [data, setData] = useState([]);
@@ -22,10 +23,10 @@ export default function Home() {
                     <ul className="bg-white shadow-md rounded-lg p-4">
                         {data.map((item, index) => (
                             <li key={index} className="p-2 border-b last:border-none">
-                                {item.name}
                             </li>
                         ))}
                     </ul>
+                    <button onClick={() => redirect('/warranty')}>upload warranty</button>
                 </main>
             </div>
         </div>

@@ -2,6 +2,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { type User } from '@supabase/supabase-js'
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
 // ...
 
@@ -47,7 +49,6 @@ export default function AccountForm({ user }: { user: User | null }) {
   }, [user, getProfile])
 
   async function updateProfile({
-    email,
     name,
     address,
   }: {
@@ -74,6 +75,7 @@ export default function AccountForm({ user }: { user: User | null }) {
       alert('Error updating the data!')
     } finally {
       setLoading(false)
+      redirect('/')
     }
   }
 
