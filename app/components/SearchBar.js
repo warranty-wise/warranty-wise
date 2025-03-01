@@ -1,5 +1,4 @@
 import { IoIosSearch } from "react-icons/io";
-import colors from "tailwindcss/colors";
 const AutocompleteSearchBar  = ({query, setQuery}) => {
     return (
         <div
