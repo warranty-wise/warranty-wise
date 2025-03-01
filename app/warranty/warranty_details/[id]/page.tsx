@@ -26,7 +26,6 @@ const WarrantyDetailsPage = async ({ params }: { params: { id: string } }) => {
             <p><strong>Warranty Status:</strong> {warranty.status}</p>
             <p><strong>Purchase Date:</strong> {warranty.purchase_date}</p>
             <p><strong>Expiration Date:</strong> {warranty.expiration_date}</p>
-
         </div>
     );
 };
