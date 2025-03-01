@@ -50,6 +50,7 @@ export default function WarrantyForm() {
 
             // Get user id
             const user_id = userData.user.id 
+            console.log('User ID:', user_id)
 
             // Formate date correctly
             const formattedPurchaseDate = new Date(formData.purchase_date).toISOString().split('T')[0]
