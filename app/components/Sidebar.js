@@ -7,9 +7,11 @@ const Sidebar = () => (
         </div>
         <div style={{ padding: '10px' }}>
             <ul className="mt-4 text-xl">
-                <li className="p-2 hover:bg-blue-700 font-bold rounded">Dashboard</li>
-                <li className="p-2 hover:bg-blue-700 font-bold rounded">Calendar</li>
-                <li className="p-2 hover:bg-blue-700 font-bold rounded">Warranty Info</li>
+                <li className="p-4 hover:bg-blue-700 font-bold rounded">Dashboard</li>
+                <li className="p-4 hover:bg-blue-700 font-bold rounded">Calendar</li>
+                <li className="p-4 hover:bg-blue-700 font-bold rounded">Warranty Info</li>
+                <li className="p-4 hover:bg-blue-700 font-bold rounded">Warranty AI</li>
+                <li className="p-4 hover:bg-blue-700 font-bold rounded">Warranty Claim</li>
             </ul>
         </div>
     </aside>
