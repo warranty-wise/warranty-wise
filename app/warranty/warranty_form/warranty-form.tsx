@@ -19,7 +19,7 @@ export default function WarrantyForm() {
         notes: '',
     })
 
-    // Handle form input changes
+    // handle form input changes
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target
         setFormData((prev) => ({
@@ -28,7 +28,7 @@ export default function WarrantyForm() {
         }))
     }    
 
-    // Handle checkbox changes
+    // handle checkbox changes
     const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, checked } = e.target
         setFormData((prev) => ({
@@ -42,21 +42,21 @@ export default function WarrantyForm() {
         try {
             setLoading(true)
 
-            // Get authenticated user
+            // get logged in user
             const { data: userData, error: userError } = await supabase.auth.getUser()
             if (userError || !userData?.user) {
                 throw new Error('User not authenticated')
             }
 
-            // Get user id
+            // store user id
             const user_id = userData.user.id 
 
-            // Formate date correctly
+            // format date correctly
             const formattedPurchaseDate = new Date(formData.purchase_date).toISOString().split('T')[0]
             const formattedExpirationDate = new Date(formData.expiration_date).toISOString().split('T')[0]
 
             
-            // Insert into table
+            // insert new warranty
             const { error } = await supabase
             .from('warranties')
             .insert([

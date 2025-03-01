@@ -2,7 +2,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { type User } from '@supabase/supabase-js'
-import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 // ...
@@ -118,7 +117,7 @@ export default function AccountForm({ user }: { user: User | null }) {
       </div>
 
       <div>
-        <form action="/auth/signout" method="post">
+        <form action="//signout" method="post">
           <button className="button block" type="submit">
             Sign out
           </button>
