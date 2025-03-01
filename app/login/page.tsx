@@ -1,39 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { login } from "./actions";
+import { useRef, useState } from "react";
 
 export default function LoginPage() {
-  const router = useRouter();
-
-  // State for form inputs
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const formRef = useRef(null);
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!email || !password) {
-      setError("Both email and password are required.");
-      return;
-    }
-
+  // Handle form submission using server action
+  const handleFormAction = async (formData: FormData) => {
     try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (response.ok) {
-        router.push("/dashboard"); // Redirect to dashboard on success
-      } else {
-        setError("Invalid login credentials");
-      }
+      await login(formData);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      setError("Something went wrong. Please try again.");
+      setError("Invalid login credentials");
     }
   };
 
@@ -45,7 +25,7 @@ export default function LoginPage() {
               Sign in to your account
             </h1>
             {error && <p className="text-red-500 text-sm">{error}</p>}
-            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-4 md:space-y-6" ref={formRef} action={handleFormAction}>
               <div>
                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">
                   Your email
@@ -53,10 +33,9 @@ export default function LoginPage() {
                 <input
                     type="email"
                     id="email"
+                    name="email"
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-300 focus:border-blue-300 block w-full p-2.5"
                     placeholder="name@company.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
                     required
                 />
               </div>
@@ -67,10 +46,9 @@ export default function LoginPage() {
                 <input
                     type="password"
                     id="password"
+                    name="password"
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-300 focus:border-blue-300 block w-full p-2.5"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
                     required
                 />
               </div>
