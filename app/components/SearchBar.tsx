@@ -1,4 +1,7 @@
 import { IoIosSearch } from "react-icons/io";
+import {auto} from "@popperjs/core";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 const AutocompleteSearchBar  = ({query, setQuery}) => {
     return (
         <div
@@ -8,7 +11,7 @@ const AutocompleteSearchBar  = ({query, setQuery}) => {
                 border: "1px solid #ccc",
                 width: "600px",
                 display: "flex",
-                justifyContent: "start",
+                justifyContent: "center",
                 gap: "0.5em",
                 alignItems: "center",
                 background: "white",

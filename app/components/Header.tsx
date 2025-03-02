@@ -8,16 +8,13 @@ const Header = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const router = useRouter();
 
-    const handleNavigation = (path) => {
+    const handleNavigation = (path: string) => {
         router.push(path);
         setIsDropdownOpen(false);
     };
 
     return (
         <header className="bg-white text-white p-6 flex items-center justify-between w-full h-20 border">
-            <div className="ml-auto">
-                <SearchBar />
-            </div>
             <div className="ml-auto">
                 <FaRegBell className="invert size-7" />
             </div>
@@ -48,7 +45,6 @@ const Header = () => {
                         role="menu"
                         aria-orientation="vertical"
                         aria-labelledby="user-menu-button"
-                        tabIndex="-1"
                     >
                         <button
                             onClick={() => handleNavigation('/account')}
