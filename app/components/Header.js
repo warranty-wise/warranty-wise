@@ -1,10 +1,17 @@
 import { useState } from "react";
 import { FaUserCircle, FaRegBell } from "react-icons/fa";
 import { RxDividerVertical } from "react-icons/rx";
+import { useRouter } from "next/navigation";
 import SearchBar from "@/app/components/SearchBar";
 
 const Header = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const router = useRouter();
+
+    const handleNavigation = (path) => {
+        router.push(path);
+        setIsDropdownOpen(false);
+    };
 
     return (
         <header className="bg-white text-white p-6 flex items-center justify-between w-full h-20 border">
@@ -27,7 +34,7 @@ const Header = () => {
                     id="user-menu-button"
                     aria-expanded={isDropdownOpen}
                     aria-haspopup="true"
-                    onClick={() => setIsDropdownOpen(!isDropdownOpen)} // 👈 Toggle state
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                     <span className="absolute -inset-1.5"></span>
                     <span className="sr-only">Open user menu</span>
@@ -43,15 +50,27 @@ const Header = () => {
                         aria-labelledby="user-menu-button"
                         tabIndex="-1"
                     >
-                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                        <button
+                            onClick={() => handleNavigation('/account')}
+                            className="block w-full text-left px-4 py-2 text-sm bg-white text-gray-700 hover:bg-gray-100"
+                            role="menuitem"
+                        >
                             Your Profile
-                        </a>
-                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                        </button>
+                        <button
+                            onClick={() => handleNavigation('/settings')}
+                            className="block w-full text-left px-4 py-2 text-sm bg-white text-gray-700 hover:bg-gray-100"
+                            role="menuitem"
+                        >
                             Settings
-                        </a>
-                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                        </button>
+                        <button
+                            onClick={() => handleNavigation('/logout')}
+                            className="block w-full text-left px-4 py-2 text-sm bg-white text-gray-700 hover:bg-gray-100"
+                            role="menuitem"
+                        >
                             Sign out
-                        </a>
+                        </button>
                     </div>
                 )}
             </div>
