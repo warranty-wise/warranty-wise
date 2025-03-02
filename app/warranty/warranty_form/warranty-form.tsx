@@ -2,27 +2,27 @@
 import { useForm } from 'react-hook-form'
 import { createWarranty } from '../actions'
 
-export default function WarrantyForm() {
-    const { register, handleSubmit, formState: { errors } } = useForm()
+type WarrantyFormData = {
+    product_name: string;
+    product_type: string;
+    warranty_period: number;
+    purchase_date: string;
+    expiration_date: string;
+    product_manufacturer: string;
+    product_serial_number: string;
+    coverage: string;
+    status: string;
+    can_renew: boolean;
+    notes?: string;
+};
 
-    interface WarrantyFormData {
-        product_name: string;
-        product_type: string;
-        warranty_period: number;
-        purchase_date: string;
-        expiration_date: string;
-        product_manufacturer: string;
-        product_serial_number: string;
-        coverage: string;
-        status: string;
-        can_renew?: boolean;
-        notes?: string;
-    }
+export default function WarrantyForm() {
+    const { register, handleSubmit, formState: { errors } } = useForm<WarrantyFormData>()
 
     return (
         <div>
             <h1>Insert Warranty Form</h1>
-            <form onSubmit={handleSubmit(createWarranty as any)}>
+            <form onSubmit={handleSubmit(createWarranty)}>
                 <label>
                     Product Name:
                     <input type="text" {...register("product_name", { required: true })} />

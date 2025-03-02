@@ -10,7 +10,7 @@ interface EditWarrantyFormProps {
 
 export default function EditWarrantyForm({ warranty_id }: EditWarrantyFormProps) {
     const supabase = createClient()
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm<WarrantyData>()
+    const { register, handleSubmit, setValue, } = useForm<WarrantyData>()
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
