@@ -1,9 +1,8 @@
 'use client'
-import { createClient } from '@/utils/supabase/client'
 import { useForm } from 'react-hook-form'
+import { createWarranty } from '../actions'
 
 export default function WarrantyForm() {
-    const supabase = createClient()
     const { register, handleSubmit, formState: { errors } } = useForm()
 
     interface WarrantyFormData {
@@ -18,53 +17,6 @@ export default function WarrantyForm() {
         status: string;
         can_renew?: boolean;
         notes?: string;
-    }
-
-    async function createWarranty(data: WarrantyFormData) {
-        try {
-            // get logged in user
-            const { data: userData, error: userError } = await supabase.auth.getUser()
-            if (userError || !userData?.user) {
-                throw new Error('User not authenticated')
-            }
-
-            // store user id
-            const user_id = userData.user.id 
-            console.log('User ID:', user_id)
-
-            // format date correctly
-            const formattedPurchaseDate = new Date(data.purchase_date).toISOString().split('T')[0]
-            const formattedExpirationDate = new Date(data.expiration_date).toISOString().split('T')[0]
-
-            // insert new warranty
-            const { error } = await supabase
-                .from('warranties')
-                .insert([
-                    {
-                        user_id,
-                        product_name: data.product_name,
-                        product_type: data.product_type,
-                        warranty_period: Number(data.warranty_period),
-                        purchase_date: formattedPurchaseDate,
-                        expiration_date: formattedExpirationDate,
-                        product_manufacturer: data.product_manufacturer,
-                        product_serial_number: data.product_serial_number,
-                        coverage: data.coverage,
-                        status: data.status,
-                        can_renew: data.can_renew,
-                        uploaded_at: new Date().toISOString(),
-                        notes: data.notes,
-                    },
-                ])        
-            if (error) {
-                console.error('Supabase Error:', error.code, error.message, error.details);
-                alert(`Error: ${error.message}`);            
-                throw error
-            }
-            alert('Warranty created')
-        } catch (error) {
-            console.error('Error creating warranty:', error)
-        }
     }
 
     return (

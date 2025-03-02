@@ -1,15 +1,17 @@
-import { createClient } from "@/utils/supabase/server";
-import Link from "next/link";
-import { notFound } from "next/navigation";
+import DeleteButton from "@/app/components/DeleteButton"
+import { createClient } from "@/utils/supabase/server"
+import Link from "next/link"
+import { notFound } from "next/navigation"
 
 const WarrantyDetailsPage = async ({ params }: { params: { id: string } }) => {
     const supabase = await createClient()
+    const { id } = await params
 
     // fetch warranty data
     const { data: warranty, error } = await supabase
         .from("warranties")
         .select("*")
-        .eq("warranty_id", params.id)
+        .eq("warranty_id", id)
         .single()
 
     if (error || !warranty) {
@@ -34,9 +36,10 @@ const WarrantyDetailsPage = async ({ params }: { params: { id: string } }) => {
                 <Link href={`/warranty/edit/${warranty.warranty_id}`}>
                     <button>Edit</button>
                 </Link>
+                <DeleteButton id={warranty.warranty_id} />
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default WarrantyDetailsPage;
+export default WarrantyDetailsPage

@@ -1,9 +1,10 @@
+import EditWarrantyForm from "./edit-form"
+
 const editWarrantyPage = async ({ params }: { params: { id: string } }) => {
+    const { id } = await params
     return (
-        <div>
-            <h1 className="center">Edit Warranty</h1>
-        </div>
+        <EditWarrantyForm warranty_id={id} />
     )
 }
 
-export default editWarrantyPage;
+export default editWarrantyPage
