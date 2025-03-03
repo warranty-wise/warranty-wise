@@ -35,7 +35,7 @@ export default function LoginPage() {
                     id="email"
                     name="email"
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-300 focus:border-blue-300 block w-full p-2.5"
-                    placeholder="name@company.com"
+                    placeholder="name@domain.com"
                     required
                 />
               </div>
