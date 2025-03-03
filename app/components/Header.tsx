@@ -1,17 +1,17 @@
-import { useState } from "react";
+import {SetStateAction, useState} from "react";
 import { FaUserCircle, FaRegBell } from "react-icons/fa";
 import { RxDividerVertical } from "react-icons/rx";
 import { useRouter } from "next/navigation";
-import SearchBar from "@/app/components/SearchBar";
 
-const Header = () => {
+const Header = ({ setActiveComponent }: { setActiveComponent: (component: string) => void }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const router = useRouter();
 
-    const handleNavigation = (path: string) => {
+    const handlePageNavigation = (path: string) => {
         router.push(path);
         setIsDropdownOpen(false);
     };
+
 
     return (
         <header className="bg-white text-white p-6 flex items-center justify-between w-full h-20 border">
@@ -47,21 +47,21 @@ const Header = () => {
                         aria-labelledby="user-menu-button"
                     >
                         <button
-                            onClick={() => handleNavigation('/account')}
+                            onClick={() => setActiveComponent("account")}
                             className="block w-full text-left px-4 py-2 text-sm bg-white text-gray-700 hover:bg-gray-100"
                             role="menuitem"
                         >
-                            Your Profile
+                           Account Info
                         </button>
                         <button
-                            onClick={() => handleNavigation('/settings')}
+                            onClick={() => handlePageNavigation('/settings')}
                             className="block w-full text-left px-4 py-2 text-sm bg-white text-gray-700 hover:bg-gray-100"
                             role="menuitem"
                         >
                             Settings
                         </button>
                         <button
-                            onClick={() => handleNavigation('/logout')}
+                            onClick={() => handlePageNavigation('/logout')}
                             className="block w-full text-left px-4 py-2 text-sm bg-white text-gray-700 hover:bg-gray-100"
                             role="menuitem"
                         >

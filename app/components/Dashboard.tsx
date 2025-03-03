@@ -57,7 +57,8 @@ const Dashboard = () => {
                 <div className="p-2 mb-4" style={{display: "flex", flexFlow: "nowrap", justifyContent: "center", alignItems: "center"}}>
                     <SearchBar query={undefined} setQuery={undefined} />
                 </div>
-                <div>
+                <div style={{display: "flex", flexFlow: "nowrap", justifyContent: "right", alignItems: "right"}}>
+                    <button className=" mt-3 mb-6 p-2 m-5 bg-blue-600" onClick={() => router.push('/warranty/warranty_form')}>Upload Warranty</button>
                 </div>
             </div>
             <ul className="bg-white shadow-md rounded-lg p-4">
@@ -77,7 +78,6 @@ const Dashboard = () => {
                     </li>
                 ))}
             </ul>
-            <button onClick={() => router.push('/warranty/warranty_form')}>upload warranty</button>
         </>
     )
 };
