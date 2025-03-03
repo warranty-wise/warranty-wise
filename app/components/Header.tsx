@@ -1,4 +1,4 @@
-import {SetStateAction, useState} from "react";
+import { useState } from "react";
 import { FaUserCircle, FaRegBell } from "react-icons/fa";
 import { RxDividerVertical } from "react-icons/rx";
 import { useRouter } from "next/navigation";

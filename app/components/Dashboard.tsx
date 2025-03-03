@@ -7,7 +7,7 @@ import CardContent from "@mui/material/CardContent";
 import { useRouter } from "next/navigation";
 import SearchBar from "@/app/components/SearchBar";
 
-const Dashboard = () => {
+const Dashboard = ({ setActiveComponent }: { setActiveComponent: (component: string) => void }) => {
 
     const supabase = createClient()
     interface Warranty {
@@ -58,7 +58,7 @@ const Dashboard = () => {
                     <SearchBar query={undefined} setQuery={undefined} />
                 </div>
                 <div style={{display: "flex", flexFlow: "nowrap", justifyContent: "right", alignItems: "right"}}>
-                    <button className=" mt-3 mb-6 p-2 m-5 bg-blue-600" onClick={() => router.push('/warranty/warranty_form')}>Upload Warranty</button>
+                    <button className=" mt-3 mb-6 p-2 m-5 bg-blue-600" onClick={() => setActiveComponent("warranty-upload")}>Upload Warranty</button>
                 </div>
             </div>
             <ul className="bg-white shadow-md rounded-lg p-4">
@@ -66,7 +66,7 @@ const Dashboard = () => {
                     <li key={index} className="p-2 border-b last:border-none">
                         <Card>
                             <CardActionArea
-                                onClick={() => router.push(`/warranty/warranty_details/${item.warranty_id}`)}
+                                onClick={() => setActiveComponent(`warranty-details-${item.warranty_id}`)}
                             >
                                 <CardContent>
                                     <h2 className="text-black">{item.product_name}</h2>

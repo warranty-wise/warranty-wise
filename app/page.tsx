@@ -8,6 +8,9 @@ import Sidebar from "./components/Sidebar";
 // Import components for each section
 import Dashboard from "./components/Dashboard";
 import Account from "./components/Account";
+import WarrantyDetails from "@/app/components/WarrantyDetails";
+import WarrantyUploadForm from "@/app/components/WarrantyUploadForm";
+import {EditWarrantyForm} from "@/app/components/EditWarrantyForm";
 //import {createClient} from "@/utils/supabase/server";
 
 export default function Home() {
@@ -19,6 +22,16 @@ export default function Home() {
     const [activeComponent, setActiveComponent] = useState("dashboard");
 
     const renderComponent = () => {
+        if(activeComponent.startsWith("warranty-details-")) {
+            const warrantyID = activeComponent.replace("warranty-details-", "");
+            return <WarrantyDetails warrantyId={warrantyID} setActiveComponent={setActiveComponent} />
+        }
+
+        if (activeComponent.startsWith("edit-warranty-")) {
+            const warrantyId = activeComponent.replace("edit-warranty-", "");
+            return <EditWarrantyForm warranty_id={warrantyId} setActiveComponent={setActiveComponent} />;
+        }
+
         switch (activeComponent) {
             /*
             case "calendar":
@@ -31,11 +44,13 @@ export default function Home() {
                 return <WarrantyClaim />;
 
              */
+            case "warranty-upload":
+                return <WarrantyUploadForm setActiveComponent={setActiveComponent} />
             case "account":
                 return <Account />
             case "dashboard":
             default:
-                return <Dashboard />;
+                return <Dashboard setActiveComponent={setActiveComponent}/>;
         }
     };
 
