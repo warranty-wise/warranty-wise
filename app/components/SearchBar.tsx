@@ -1,5 +1,4 @@
 import { IoIosSearch } from "react-icons/io";
-import {auto} from "@popperjs/core";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 const AutocompleteSearchBar  = ({query, setQuery}) => {

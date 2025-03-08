@@ -4,7 +4,6 @@ import {useCallback, useEffect, useState} from "react";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
-import { useRouter } from "next/navigation";
 import SearchBar from "@/app/components/SearchBar";
 
 const Dashboard = ({ setActiveComponent }: { setActiveComponent: (component: string) => void }) => {
@@ -17,7 +16,6 @@ const Dashboard = ({ setActiveComponent }: { setActiveComponent: (component: str
         product_manufacturer: string
     }
 
-    const router = useRouter();
     const [data, setData] = useState<Warranty[]>([])
 
     const getWarranty = useCallback(async () => {

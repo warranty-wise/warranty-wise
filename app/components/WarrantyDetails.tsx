@@ -3,7 +3,6 @@
 import DeleteButton from "@/app/components/DeleteButton";
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 
 const WarrantyDetails = ({ warrantyId, setActiveComponent }: { warrantyId: string, setActiveComponent: (component: string) => void }) => {
     const supabase = createClient();
