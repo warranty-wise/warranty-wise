@@ -22,6 +22,7 @@ interface WarrantyData {
     status: string;
     can_renew: boolean;
     notes?: string;
+    updated_at: string;
 }
 
 export function EditWarrantyForm({ warranty_id, setActiveComponent }: EditWarrantyFormProps) {
@@ -95,7 +96,11 @@ export function EditWarrantyForm({ warranty_id, setActiveComponent }: EditWarran
                     </label>
                     <label className="block">
                         Status:
-                        <input type="text" {...register("status", { required: true })} className="w-full p-2 border border-gray-300 rounded bg-white text-black" />
+                        <select {...register("status", { required: true })} className="w-full p-2 border border-gray-300 rounded bg-white text-black">
+                            <option value="Active">Active</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Expired">Expired</option>
+                        </select>
                     </label>
                 </div>
                 <label className="block text-black">

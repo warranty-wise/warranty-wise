@@ -42,15 +42,18 @@ const WarrantyDetails = ({ warrantyId, setActiveComponent }: { warrantyId: strin
             </button>
             <h1 className="text-2xl font-bold text-black text-center mb-6">Warranty Details</h1>
             <div className="grid grid-cols-2 gap-4 text-black [&>p]:text-black [&>p>strong]:text-black">
-                <p><strong>ID:</strong> {warranty.warranty_id}</p>
                 <p><strong>Product Name:</strong> {warranty.product_name}</p>
                 <p><strong>Manufacturer:</strong> {warranty.product_manufacturer}</p>
                 <p><strong>Type:</strong> {warranty.product_type}</p>
                 <p><strong>Serial Number:</strong> {warranty.product_serial_number}</p>
                 <p><strong>Warranty Period:</strong> {warranty.warranty_period} Months</p>
                 <p><strong>Status:</strong> {warranty.status}</p>
+                <p><strong>Can Renew:</strong> {warranty.can_renew ? "Yes" : "No"}</p>
+                <p><strong>Coverage:</strong> {warranty.coverage}</p>
                 <p><strong>Purchase Date:</strong> {warranty.purchase_date}</p>
                 <p><strong>Expiration Date:</strong> {warranty.expiration_date}</p>
+                {warranty.notes && <p><strong>Notes:</strong> {warranty.notes}</p>}
+                <p><strong>Uploaded at: </strong> {new Date(warranty.uploaded_at).toISOString().split('T')[0]}</p>
             </div>
             <div className="flex justify-between mt-6">
                 <button onClick={() => setActiveComponent(`edit-warranty-${warranty.warranty_id}`)}

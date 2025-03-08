@@ -86,6 +86,7 @@ export async function updateWarranty(data: WarrantyFormData, warranty_id: string
                 status: data.status,
                 can_renew: data.can_renew,
                 notes: data.notes,
+                updated_at: new Date().toISOString(),
             })
             .eq('warranty_id', warranty_id)
         if (error) {

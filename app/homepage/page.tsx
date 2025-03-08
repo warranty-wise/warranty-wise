@@ -23,8 +23,8 @@ export default function Home() {
 
     const renderComponent = () => {
         if(activeComponent.startsWith("warranty-details-")) {
-            const warrantyID = activeComponent.replace("warranty-details-", "");
-            return <WarrantyDetails warrantyId={warrantyID} setActiveComponent={setActiveComponent} />
+            const warrantyId = activeComponent.replace("warranty-details-", "");
+            return <WarrantyDetails warrantyId={warrantyId} setActiveComponent={setActiveComponent} />
         }
 
         if (activeComponent.startsWith("edit-warranty-")) {

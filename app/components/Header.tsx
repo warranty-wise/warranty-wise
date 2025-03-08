@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FaUserCircle, FaRegBell } from "react-icons/fa";
 import { RxDividerVertical } from "react-icons/rx";
 import { useRouter } from "next/navigation";
@@ -6,11 +6,25 @@ import { useRouter } from "next/navigation";
 const Header = ({ setActiveComponent }: { setActiveComponent: (component: string) => void }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const router = useRouter();
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     const handlePageNavigation = (path: string) => {
         router.push(path);
         setIsDropdownOpen(false);
     };
+
+    const handleClickOutside = (event: MouseEvent) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+          setIsDropdownOpen(false);
+        }
+      };
+
+      useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+          document.removeEventListener('mousedown', handleClickOutside);
+        };
+      }, []);
 
 
     return (
@@ -23,7 +37,7 @@ const Header = ({ setActiveComponent }: { setActiveComponent: (component: string
             </div>
 
             {/* Dropdown Wrapper */}
-            <div className="relative ml-0">
+            <div className="relative ml-0" ref={dropdownRef}>
                 {/* Button that toggles dropdown */}
                 <button
                     type="button"
@@ -47,7 +61,10 @@ const Header = ({ setActiveComponent }: { setActiveComponent: (component: string
                         aria-labelledby="user-menu-button"
                     >
                         <button
-                            onClick={() => setActiveComponent("account")}
+                            onClick={() => {
+                                setActiveComponent("account")
+                                setIsDropdownOpen(false)
+                            }}
                             className="block w-full text-left px-4 py-2 text-sm bg-white text-gray-700 hover:bg-gray-100"
                             role="menuitem"
                         >

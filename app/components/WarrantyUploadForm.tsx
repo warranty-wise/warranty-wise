@@ -77,8 +77,11 @@ const WarrantyUploadForm= ({ setActiveComponent }: { setActiveComponent: (compon
                     </label>
                     <label className="block">
                         Status:
-                        <input type="text" {...register("status", {required: true})}
-                               className="w-full p-2 border border-gray-300 rounded bg-white text-black"/>
+                        <select {...register("status", { required: true })} className="w-full p-2 border border-gray-300 rounded bg-white text-black">
+                            <option value="Active">Active</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Expired">Expired</option>
+                        </select>
                         {errors.status && <span className="text-red-500">This field is required</span>}
                     </label>
                 </div>

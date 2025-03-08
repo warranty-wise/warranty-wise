@@ -25,18 +25,17 @@ export async function login(formData: FormData) {
 
   if (!validation.success) {
     console.error("Validation failed:", validation.error.format())
-    redirect('/error') // Redirect to an error page if validation fails
     return
   }
 
   const { error } = await supabase.auth.signInWithPassword(validation.data)
 
   if (error) {
-    redirect('/error')
+    console.error("Login failed:", error.message)
+  } else {
+    revalidatePath('/homepage', 'layout')
+    redirect('/homepage')
   }
-
-  revalidatePath('/homepage', 'layout')
-  redirect('/homepage')
 }
 
 export async function signup(formData: FormData) {
