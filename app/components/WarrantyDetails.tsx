@@ -4,9 +4,25 @@ import DeleteButton from "@/app/components/DeleteButton";
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
 
+type WarrantyFormData = {
+    warranty_id: string;
+    product_name: string;
+    product_type: string;
+    warranty_period: number;
+    purchase_date: string;
+    expiration_date: string;
+    product_manufacturer: string;
+    product_serial_number: string;
+    coverage: string;
+    status: string;
+    can_renew: boolean;
+    notes?: string;
+    uploaded_at: string;
+};
+
 const WarrantyDetails = ({ warrantyId, setActiveComponent }: { warrantyId: string, setActiveComponent: (component: string) => void }) => {
     const supabase = createClient();
-    const [warranty, setWarranty] = useState<any | null>(null);
+    const [warranty, setWarranty] = useState<WarrantyFormData | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
