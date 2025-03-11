@@ -16,26 +16,30 @@ export async function login(formData: FormData) {
   const supabase = await createClient()
 
   const data = {
-    email: formData.get('email'),
-    password: formData.get('password'), 
-  }
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+  };
 
   // Validate the form data
   const validation = loginSchema.safeParse(data)
 
   if (!validation.success) {
-    console.error("Validation failed:", validation.error.format())
-    return
+    const formattedErrors = validation.error.format();
+    return {
+      email: formattedErrors.email?._errors[0] || null,
+      password: formattedErrors.password?._errors[0] || null,
+    }
   }
 
   const { error } = await supabase.auth.signInWithPassword(validation.data)
 
   if (error) {
-    console.error("Login failed:", error.message)
-  } else {
-    revalidatePath('/homepage', 'layout')
-    redirect('/homepage')
+    console.error("Error logging in:", error.message)
+    return { general: error.message }
   }
+
+  revalidatePath("/homepage", "layout")
+  redirect("/homepage")
 }
 
 export async function signup(formData: FormData) {
