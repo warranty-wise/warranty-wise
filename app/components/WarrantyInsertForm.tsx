@@ -17,7 +17,7 @@ type WarrantyFormData = {
     notes?: string;
 };
 
-const WarrantyUploadForm= ({ setActiveComponent }: { setActiveComponent: (component: string) => void }) => {
+const WarrantyInsertForm= ({ setActiveComponent }: { setActiveComponent: (component: string) => void }) => {
     const {register, handleSubmit, formState: {errors}} = useForm<WarrantyFormData>();
 
     return (
@@ -105,4 +105,4 @@ const WarrantyUploadForm= ({ setActiveComponent }: { setActiveComponent: (compon
     );
 }
 
-export default WarrantyUploadForm;
+export default WarrantyInsertForm;

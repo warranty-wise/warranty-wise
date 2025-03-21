@@ -9,8 +9,10 @@ import Sidebar from "../components/Sidebar";
 import Dashboard from "../components/Dashboard";
 import Account from "../components/Account";
 import WarrantyDetails from "@/app/components/WarrantyDetails";
-import WarrantyUploadForm from "@/app/components/WarrantyUploadForm";
+import WarrantyInsertForm from "@/app/components/WarrantyInsertForm";
+import WarrantyUpload from "@/app/components/WarrantyUpload";
 import {EditWarrantyForm} from "@/app/components/EditWarrantyForm";
+import UploadSelect from "@/app/components/UploadSelect";
 //import {createClient} from "@/utils/supabase/server";
 
 export default function Home() {
@@ -44,8 +46,12 @@ export default function Home() {
                 return <WarrantyClaim />;
 
              */
+            case "warranty-form":
+                return <WarrantyInsertForm setActiveComponent={setActiveComponent} />
             case "warranty-upload":
-                return <WarrantyUploadForm setActiveComponent={setActiveComponent} />
+                return <WarrantyUpload setActiveComponent={setActiveComponent} />
+            case "warranty-form-select":
+                return <UploadSelect setActiveComponent={setActiveComponent} />
             case "account":
                 return <Account />
             case "dashboard":
