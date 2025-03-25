@@ -26,7 +26,7 @@ const WarrantyUpload = ({ setActiveComponent }: { setActiveComponent: (component
                 worker.terminate()
             }
         }
-    }, [worker])
+    })
 
     // set the files we need to scan through
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +76,7 @@ const WarrantyUpload = ({ setActiveComponent }: { setActiveComponent: (component
                     type="file"
                     hidden
                     multiple
-                    accept="image/*, .pdf"
+                    accept="image/*"
                     onChange={handleFileChange}
                 />
             </Button>
