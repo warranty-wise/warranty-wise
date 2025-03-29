@@ -1,30 +1,30 @@
 "use client";
 
-import { login } from "./actions";
+import { signup } from "./actions";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 
-interface LoginForm {
+interface SignupForm {
   email: string;
   password: string;
 }
 
-export default function LoginPage() {
+export default function SignupPage() {
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm<LoginForm>();
+  } = useForm<SignupForm>();
 
   const [generalError, setGeneralError] = useState("");
 
-  const onSubmit = async (data: LoginForm) => {
+  const onSubmit = async (data: SignupForm) => {
     const formData = new FormData();
     formData.append("email", data.email);
     formData.append("password", data.password);
 
-    const result = await login(formData);
+    const result = await signup(formData);
 
     if (result?.email) {
       setError("email", { message: result.email });
@@ -42,7 +42,7 @@ export default function LoginPage() {
       <div className="w-full bg-white rounded-lg shadow border border-gray-300 md:mt-0 sm:max-w-md xl:p-0">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-            Sign in to your account
+            Sign Up
           </h1>
           {generalError && <p className="text-red-500 text-sm">{generalError}</p>}
           <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit(onSubmit)}>
@@ -71,37 +71,12 @@ export default function LoginPage() {
               />
               {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
             </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-start">
-                <div className="flex items-center h-5">
-                  <input
-                    id="remember"
-                    type="checkbox"
-                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300"
-                  />
-                  <div className="ml-3 text-sm">
-                    <label htmlFor="remember" className="text-gray-500">
-                      Remember me
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
-                Forgot password?
-              </a>
-            </div>
             <button
               type="submit"
               className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
             >
-              Sign in
+              Sign up
             </button>
-            <p className="text-sm font-light text-gray-500">
-              Don’t have an account yet?{" "}
-              <a href="signup" className="font-medium text-blue-600 hover:underline">
-                Sign up
-              </a>
-            </p>
           </form>
         </div>
       </div>
