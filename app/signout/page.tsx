@@ -1,8 +1,8 @@
 export default function signoutPage() {
     return (
-        <div>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-amber-50">
             <div>
-                <h1>You have been signed out </h1>
+                <h1 className="text-black">You have been signed out </h1>
             </div>
             <div>
                 <button className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
