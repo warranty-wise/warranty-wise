@@ -36,7 +36,7 @@ export function CheckWarrantyForm({ warranty_id, user_id, setActiveComponent }: 
             const { data, error } = await supabase
                 .from('warranties_check')
                 .select('*')
-                .eq('warranty_id', warranty_id)
+                .eq('user_id', user_id)
                 .single();
 
             if (error) {
