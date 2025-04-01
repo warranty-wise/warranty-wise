@@ -13,34 +13,43 @@ export default function ChatBox() {
         setInput("");
         setLoading(true);
 
-        const res = await fetch("/api/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ messages: newMessages }),
-        });
-
-        const text = await res.text();
-        console.log("RAW RESPONSE FROM /api/chat:", text);
-
         try {
-            const data = JSON.parse(text);
-            setMessages([...newMessages, { role: "assistant", content: data.reply }]);
+            const res = await fetch("/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ messages: newMessages }),
+            });
+
+            const text = await res.text();
+            console.log("RAW RESPONSE FROM /api/chat:", text);
+
+            try {
+                const data = JSON.parse(text);
+                const updatedMessages = [...newMessages, { role: "assistant", content: data.reply }];
+                setMessages(updatedMessages);
+            } catch (err) {
+                console.error("Failed to parse JSON:", err);
+                setMessages([...newMessages, { role: "assistant", content: "Error: Could not get response." }]);
+            }
         } catch (err) {
-            console.error("Failed to parse JSON:", err);
-            setMessages([...newMessages, { role: "assistant", content: "Error: Could not get response." }]);
+            console.error("Network error:", err);
+            setMessages([...newMessages, { role: "assistant", content: "Network error." }]);
+        } finally {
+            setLoading(false); // Always turn off loading, even on error
         }
     };
 
+
     return (
-        <div className="w-full bg-white rounded shadow p-4 flex flex-col gap-2">
+        <div className="mx-12 bg-white rounded shadow p-4 flex flex-col gap-2">
             <div className="overflow-y-auto flex-1 max-h-[70vh]">
                 {messages.map((msg, i) => (
                     <div
                         key={i}
-                        className={`p-2 my-1 rounded-md max-w-[75%] ${
+                        className={`p-2 my-4 rounded-md ${
                             msg.role === "user"
-                                ? "bg-blue-600 self-end text-right"
-                                : "bg-gray-500 self-start text-left"
+                                ? "bg-blue-600 w-fit ml-auto max-w-[80%]"
+                                : "bg-gray-400 w-fit mr-auto max-w-[80%]"
                         }`}
                     >
                         {msg.content}
