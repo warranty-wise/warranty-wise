@@ -51,7 +51,7 @@ export function CheckWarrantyForm({ warranty_id, user_id, setActiveComponent }: 
         }
 
         fetchWarranty();
-    }, [warranty_id, setValue, supabase]);
+    }, [warranty_id, setValue, supabase, user_id]);
 
     if (loading) return <p className="text-black text-center">Loading warranty details...</p>;
 

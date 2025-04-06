@@ -26,7 +26,7 @@ const WarrantyUpload = ({ setActiveComponent }: { setActiveComponent: (component
                 worker.terminate()
             }
         }
-    }, [null])
+    }, [])
 
     // set the files we need to scan through
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

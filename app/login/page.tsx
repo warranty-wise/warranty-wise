@@ -3,6 +3,7 @@
 import { login } from "./actions";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { GoogleSignInButton } from "../components/GoogleSignInButton";
 
 interface LoginForm {
   email: string;
@@ -44,6 +45,9 @@ export default function LoginPage() {
           <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
             Sign in to your account
           </h1>
+          <div className="flex items-center">
+            {<GoogleSignInButton />}
+          </div>
           {generalError && <p className="text-red-500 text-sm">{generalError}</p>}
           <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div>
@@ -90,12 +94,14 @@ export default function LoginPage() {
                 Forgot password?
               </a>
             </div>
-            <button
-              type="submit"
-              className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-            >
-              Sign in
-            </button>
+            <div>
+              <button
+                type="submit"
+                className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+              >
+                Sign in
+              </button>
+            </div>
             <p className="text-sm font-light text-gray-500">
               Don’t have an account yet?{" "}
               <a href="signup" className="font-medium text-blue-600 hover:underline">

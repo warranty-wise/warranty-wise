@@ -15,7 +15,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ id, setActiveComponent }: {
         if (!confirmed) return;
 
         try {
-            await deleteWarranty(id.toString());
+            await deleteWarranty(id.toString(), 'warranties');
 
             Swal.fire({
                 title: "Deleted!",
