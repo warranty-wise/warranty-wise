@@ -2,6 +2,7 @@
 
 import { createClient } from '@/utils/supabase/client'
 import { Google } from '@mui/icons-material';
+import { Button } from '@mui/material';
 
 export const GoogleSignInButton = () => {
     const supabase = createClient()
@@ -16,5 +17,5 @@ export const GoogleSignInButton = () => {
     if (error) console.error('Google Sign-In Error:', error.message)
   };
 
-  return <button className="bg-black" onClick={handleSignIn}><Google /></button>
+  return <Button variant='contained' startIcon={<Google />} onClick={handleSignIn}>Sign in with Google</Button>
 };
