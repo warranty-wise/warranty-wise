@@ -8,6 +8,9 @@ export const GoogleSignInButton = () => {
   const handleSignIn = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/homepage`,
+      }
     })
 
     if (error) console.error('Google Sign-In Error:', error.message)
