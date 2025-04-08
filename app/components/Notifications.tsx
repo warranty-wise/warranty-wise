@@ -14,26 +14,26 @@ export default function Notifications({ user, setActiveComponent }: { user: User
     const supabase = createClient()
     const [notifications, setNotifications] = useState<Notification[]>([])
 
-    async function getNotifications(user_id: string) {
-        const { data, error } = await supabase
-            .from('notification')
-            .select('*')
-            .eq('send_to', user_id as string)
-            .order('created_at', { ascending: false })
-        if (error) {
-            console.error("Error fetching notifications:", error)
-            return []
-        }
-        setNotifications(data)
-    }
-
     useEffect(() => {
+        async function getNotifications(user_id: string) {
+            const { data, error } = await supabase
+                .from('notification')
+                .select('*')
+                .eq('send_to', user_id)
+                .order('created_at', { ascending: false })
+    
+            if (error) {
+                console.error("Error fetching notifications:", error)
+                return
+            }
+    
+            setNotifications(data)
+        }
+    
         if (user) {
             getNotifications(user.id)
         }
-    }, [user, getNotifications])
-
-
+    }, [user, supabase])    
 
     return (
         <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md">
