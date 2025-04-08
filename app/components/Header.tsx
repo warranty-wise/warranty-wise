@@ -16,22 +16,26 @@ const Header = ({ setActiveComponent }: { setActiveComponent: (component: string
 
     const handleClickOutside = (event: MouseEvent) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-          setIsDropdownOpen(false);
+            setIsDropdownOpen(false);
         }
-      };
+    };
 
-      useEffect(() => {
+    useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
-          document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside);
         };
-      }, []);
+    }, []);
 
 
     return (
         <header className="bg-white text-white p-6 flex items-center justify-between w-full h-20 border">
             <div className="ml-auto">
-                <FaRegBell className="invert size-7" />
+                <button onClick={ () => setActiveComponent("notification") } className="relative flex items-center rounded-full text-sm bg-white">
+                    <span className="absolute -inset-1.5"></span>
+                    <span className="sr-only">Open notifications</span>
+                    <FaRegBell className="size-8 invert" />
+                </button>
             </div>
             <div>
                 <RxDividerVertical className="size-10 invert" />
@@ -69,7 +73,7 @@ const Header = ({ setActiveComponent }: { setActiveComponent: (component: string
                             className="block w-full text-left px-4 py-2 text-sm bg-white text-gray-700 hover:bg-gray-100"
                             role="menuitem"
                         >
-                           Account Info
+                            Account Info
                         </button>
                         <button
                             onClick={() => handlePageNavigation('/settings')}
