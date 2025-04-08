@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
+import ChatBot from "../components/ChatBot";
 // import { useRouter } from 'next/navigation';
 //import { createClient } from "@/utils/supabase/client";
 
@@ -52,6 +53,8 @@ export default function Home() {
                 return <WarrantyUpload setActiveComponent={setActiveComponent} />
             case "warranty-form-select":
                 return <UploadSelect setActiveComponent={setActiveComponent} />
+            case "warranty-ai":
+                return <ChatBot />
             case "account":
                 return <Account />
             case "dashboard":
