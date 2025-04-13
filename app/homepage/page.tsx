@@ -14,6 +14,7 @@ import WarrantyInsertForm from "@/app/components/WarrantyInsertForm";
 import WarrantyUpload from "@/app/components/WarrantyUpload";
 import {EditWarrantyForm} from "@/app/components/EditWarrantyForm";
 import UploadSelect from "@/app/components/UploadSelect";
+import Calendar from "@/app/components/Calendar";
 //import {createClient} from "@/utils/supabase/server";
 
 export default function Home() {
@@ -57,6 +58,8 @@ export default function Home() {
                 return <ChatBot />
             case "account":
                 return <Account />
+            case "calendar":
+                return <Calendar setActiveComponent={setActiveComponent}/>
             case "dashboard":
             default:
                 return <Dashboard setActiveComponent={setActiveComponent}/>;
