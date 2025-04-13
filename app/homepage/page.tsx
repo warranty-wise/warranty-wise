@@ -1,10 +1,10 @@
 'use client'
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import ChatBot from "../components/ChatBot";
 // import { useRouter } from 'next/navigation';
-//import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/client";
 
 // Import components for each section
 import Dashboard from "../components/Dashboard";
@@ -12,20 +12,37 @@ import Account from "../components/Account";
 import WarrantyDetails from "@/app/components/WarrantyDetails";
 import WarrantyInsertForm from "@/app/components/WarrantyInsertForm";
 import WarrantyUpload from "@/app/components/WarrantyUpload";
-import {EditWarrantyForm} from "@/app/components/EditWarrantyForm";
+import { EditWarrantyForm } from "@/app/components/EditWarrantyForm";
 import UploadSelect from "@/app/components/UploadSelect";
+import Notifications from "@/app/components/Notifications";
+import { User } from "@supabase/supabase-js";
 //import {createClient} from "@/utils/supabase/server";
 
 export default function Home() {
 
     //Commented out for possible use in the future
     // const router = useRouter();
-    //const supabase = createClient()
+
+    const [user, setUser] = useState<User | null>(null);
+    const supabase = createClient()
+
+    const getUser = useCallback(async () => {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (error) {
+            console.error('Error fetching user:', error);
+        } else {
+            setUser(user);
+        }
+    }, [supabase]);
+
+    useEffect(() => {
+        getUser();
+    }, [getUser]);
 
     const [activeComponent, setActiveComponent] = useState("dashboard");
 
     const renderComponent = () => {
-        if(activeComponent.startsWith("warranty-details-")) {
+        if (activeComponent.startsWith("warranty-details-")) {
             const warrantyId = activeComponent.replace("warranty-details-", "");
             return <WarrantyDetails warrantyId={warrantyId} setActiveComponent={setActiveComponent} />
         }
@@ -57,9 +74,12 @@ export default function Home() {
                 return <ChatBot />
             case "account":
                 return <Account />
+            case "notification":
+                console.log(user)
+                return <Notifications user={user} setActiveComponent={setActiveComponent} />
             case "dashboard":
             default:
-                return <Dashboard setActiveComponent={setActiveComponent}/>;
+                return <Dashboard setActiveComponent={setActiveComponent} />;
         }
     };
 
@@ -67,7 +87,7 @@ export default function Home() {
         <div className="h-screen flex">
             <Sidebar setActiveComponent={setActiveComponent} />
             <div className="flex flex-col flex-1">
-                <Header setActiveComponent={setActiveComponent}/>
+                <Header setActiveComponent={setActiveComponent} />
                 <main className="flex-1 p-6 overflow-auto bg-gray-100">
                     {renderComponent()}
                 </main>
