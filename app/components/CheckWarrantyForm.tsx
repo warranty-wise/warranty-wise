@@ -5,8 +5,9 @@ import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { updateWarranty } from '@/app/warranty/actions';
 
-interface EditWarrantyFormProps {
+interface CheckWarrantyFormProps {
     warranty_id: string;
+    user_id: string;
     setActiveComponent: (component: string) => void;
 }
 
@@ -25,7 +26,7 @@ interface WarrantyData {
     updated_at: string;
 }
 
-export function EditWarrantyForm({ warranty_id, setActiveComponent }: EditWarrantyFormProps) {
+export function CheckWarrantyForm({ warranty_id, user_id, setActiveComponent }: CheckWarrantyFormProps) {
     const supabase = createClient();
     const { register, handleSubmit, setValue } = useForm<WarrantyData>();
     const [loading, setLoading] = useState(true);
@@ -33,9 +34,9 @@ export function EditWarrantyForm({ warranty_id, setActiveComponent }: EditWarran
     useEffect(() => {
         async function fetchWarranty() {
             const { data, error } = await supabase
-                .from('warranties')
+                .from('warranties_check')
                 .select('*')
-                .eq('warranty_id', warranty_id)
+                .eq('user_id', user_id)
                 .single();
 
             if (error) {
@@ -50,13 +51,13 @@ export function EditWarrantyForm({ warranty_id, setActiveComponent }: EditWarran
         }
 
         fetchWarranty();
-    }, [warranty_id, setValue, supabase]);
+    }, [warranty_id, setValue, supabase, user_id]);
 
     if (loading) return <p className="text-black text-center">Loading warranty details...</p>;
 
     return (
         <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-md text-black">
-            <h1 className="text-2xl font-bold text-center mb-6 text-black">Edit Warranty</h1>
+            <h1 className="text-2xl font-bold text-center mb-6 text-black">Please Double Check The Following Information:</h1>
             <form onSubmit={handleSubmit((data) => {
                 updateWarranty(data, warranty_id);
                 setActiveComponent(`warranty-details-${warranty_id}`);
@@ -111,7 +112,7 @@ export function EditWarrantyForm({ warranty_id, setActiveComponent }: EditWarran
                     Extra Notes:
                     <textarea {...register("notes")} className="w-full p-2 border border-gray-300 rounded bg-white text-black"></textarea>
                 </label>
-                <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Update Warranty</button>
+                <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Submit</button>
                 <button onClick={() => setActiveComponent(`warranty-details-${warranty_id}`)}
                         className="w-full bg-gray-300 text-black rounded p-2 hover:bg-gray-400">
                     Cancel

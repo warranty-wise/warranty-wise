@@ -74,7 +74,7 @@ export function AccountForm() {
             alert('Error updating the data!')
         } finally {
             setLoading(false)
-            redirect('/')
+            redirect('/homepage')
         }
     }
 

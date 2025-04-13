@@ -17,14 +17,14 @@ type WarrantyFormData = {
     notes?: string;
 };
 
-const WarrantyUploadForm= ({ setActiveComponent }: { setActiveComponent: (component: string) => void }) => {
+const WarrantyInsertForm= ({ setActiveComponent }: { setActiveComponent: (component: string) => void }) => {
     const {register, handleSubmit, formState: {errors}} = useForm<WarrantyFormData>();
 
     return (
         <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-md">
             <h1 className="text-2xl font-bold text-center mb-6 text-black">Insert Warranty Form</h1>
             <form onSubmit={handleSubmit((data) => {
-                createWarranty(data);
+                createWarranty(data, 'warranties');
                 setActiveComponent("dashboard"); })} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4 text-black [&>label]:text-black">
                     <label className="block">
@@ -77,8 +77,11 @@ const WarrantyUploadForm= ({ setActiveComponent }: { setActiveComponent: (compon
                     </label>
                     <label className="block">
                         Status:
-                        <input type="text" {...register("status", {required: true})}
-                               className="w-full p-2 border border-gray-300 rounded bg-white text-black"/>
+                        <select {...register("status", { required: true })} className="w-full p-2 border border-gray-300 rounded bg-white text-black">
+                            <option value="Active">Active</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Expired">Expired</option>
+                        </select>
                         {errors.status && <span className="text-red-500">This field is required</span>}
                     </label>
                 </div>
@@ -102,4 +105,4 @@ const WarrantyUploadForm= ({ setActiveComponent }: { setActiveComponent: (compon
     );
 }
 
-export default WarrantyUploadForm;
+export default WarrantyInsertForm;

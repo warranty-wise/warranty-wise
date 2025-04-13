@@ -16,8 +16,14 @@ interface WarrantyFormData {
     notes?: string;
 }
 
-export async function createWarranty(data: WarrantyFormData) {
-    const supabase = createClient()
+const allowedTableNames = ['warranties', 'warranties_check']
+function isValidTableName(tableName: string): boolean {
+    return allowedTableNames.includes(tableName);
+}
+
+const supabase = createClient()
+
+export async function createWarranty(data: WarrantyFormData, tableName: string) {
     try {
         // get logged in user
         const { data: userData, error: userError } = await supabase.auth.getUser()
@@ -29,13 +35,18 @@ export async function createWarranty(data: WarrantyFormData) {
         const user_id = userData.user.id 
         console.log('User ID:', user_id)
 
+        // validate table name
+        if (!isValidTableName(tableName)) {
+            throw new Error(`Invalid table name: ${tableName}. Allowed table names are: ${allowedTableNames.join(', ')}`)
+        }
+
         // format date correctly
         const formattedPurchaseDate = new Date(data.purchase_date).toISOString().split('T')[0]
         const formattedExpirationDate = new Date(data.expiration_date).toISOString().split('T')[0]
 
         // insert new warranty
         const { error } = await supabase
-            .from('warranties')
+            .from(tableName)
             .insert([
                 {
                     user_id,
@@ -58,14 +69,15 @@ export async function createWarranty(data: WarrantyFormData) {
             alert(`Error: ${error.message}`);            
             throw error
         }
-        alert('Warranty created')
+        if (tableName === 'warranties') {
+            alert('Warranty created successfully')
+        }
     } catch (error) {
         console.error('Error creating warranty:', error)
     }
 }
 
 export async function updateWarranty(data: WarrantyFormData, warranty_id: string) {
-    const supabase = createClient()
     try {
         // format date correctly
         const formattedPurchaseDate = new Date(data.purchase_date).toISOString().split('T')[0]
@@ -86,6 +98,7 @@ export async function updateWarranty(data: WarrantyFormData, warranty_id: string
                 status: data.status,
                 can_renew: data.can_renew,
                 notes: data.notes,
+                updated_at: new Date().toISOString(),
             })
             .eq('warranty_id', warranty_id)
         if (error) {
@@ -99,12 +112,15 @@ export async function updateWarranty(data: WarrantyFormData, warranty_id: string
     }
 }
 
-export async function deleteWarranty(warranty_id: string) {
-    const supabase = createClient()
+export async function deleteWarranty(warranty_id: string, tableName: string) {
     try {
+        // validate table name
+        if (!isValidTableName(tableName)) {
+            throw new Error(`Invalid table name: ${tableName}. Allowed table names are: ${allowedTableNames.join(', ')}`)
+        }
         // delete warranty
         const { error } = await supabase
-            .from('warranties')
+            .from(tableName)
             .delete()
             .eq('warranty_id', warranty_id)
         if (error) {

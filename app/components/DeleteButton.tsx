@@ -5,17 +5,17 @@ import { deleteWarranty } from "../warranty/actions";
 import Swal from "sweetalert2";
 
 interface DeleteButtonProps {
-    id: number;
+    id: string;
     setActiveComponent: (component: string) => void;
 }
 
-const DeleteButton: React.FC<DeleteButtonProps> = ({ id, setActiveComponent }: { id: number; setActiveComponent: (component: string) => void }) => {
+const DeleteButton: React.FC<DeleteButtonProps> = ({ id, setActiveComponent }: { id: string; setActiveComponent: (component: string) => void }) => {
     const handleDelete = async () => {
         const confirmed = await confirmDelete();
         if (!confirmed) return;
 
         try {
-            await deleteWarranty(id.toString());
+            await deleteWarranty(id.toString(), 'warranties');
 
             Swal.fire({
                 title: "Deleted!",

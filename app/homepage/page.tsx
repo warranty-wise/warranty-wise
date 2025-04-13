@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
+import ChatBot from "../components/ChatBot";
 // import { useRouter } from 'next/navigation';
 //import { createClient } from "@/utils/supabase/client";
 
@@ -9,8 +10,10 @@ import Sidebar from "../components/Sidebar";
 import Dashboard from "../components/Dashboard";
 import Account from "../components/Account";
 import WarrantyDetails from "@/app/components/WarrantyDetails";
-import WarrantyUploadForm from "@/app/components/WarrantyUploadForm";
+import WarrantyInsertForm from "@/app/components/WarrantyInsertForm";
+import WarrantyUpload from "@/app/components/WarrantyUpload";
 import {EditWarrantyForm} from "@/app/components/EditWarrantyForm";
+import UploadSelect from "@/app/components/UploadSelect";
 //import {createClient} from "@/utils/supabase/server";
 
 export default function Home() {
@@ -23,8 +26,8 @@ export default function Home() {
 
     const renderComponent = () => {
         if(activeComponent.startsWith("warranty-details-")) {
-            const warrantyID = activeComponent.replace("warranty-details-", "");
-            return <WarrantyDetails warrantyId={warrantyID} setActiveComponent={setActiveComponent} />
+            const warrantyId = activeComponent.replace("warranty-details-", "");
+            return <WarrantyDetails warrantyId={warrantyId} setActiveComponent={setActiveComponent} />
         }
 
         if (activeComponent.startsWith("edit-warranty-")) {
@@ -44,8 +47,14 @@ export default function Home() {
                 return <WarrantyClaim />;
 
              */
+            case "warranty-form":
+                return <WarrantyInsertForm setActiveComponent={setActiveComponent} />
             case "warranty-upload":
-                return <WarrantyUploadForm setActiveComponent={setActiveComponent} />
+                return <WarrantyUpload setActiveComponent={setActiveComponent} />
+            case "warranty-form-select":
+                return <UploadSelect setActiveComponent={setActiveComponent} />
+            case "warranty-ai":
+                return <ChatBot />
             case "account":
                 return <Account />
             case "dashboard":

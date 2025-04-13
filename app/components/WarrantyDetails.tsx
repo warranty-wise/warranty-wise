@@ -4,9 +4,25 @@ import DeleteButton from "@/app/components/DeleteButton";
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
 
+type WarrantyFormData = {
+    warranty_id: string;
+    product_name: string;
+    product_type: string;
+    warranty_period: number;
+    purchase_date: string;
+    expiration_date: string;
+    product_manufacturer: string;
+    product_serial_number: string;
+    coverage: string;
+    status: string;
+    can_renew: boolean;
+    notes?: string;
+    uploaded_at: string;
+};
+
 const WarrantyDetails = ({ warrantyId, setActiveComponent }: { warrantyId: string, setActiveComponent: (component: string) => void }) => {
     const supabase = createClient();
-    const [warranty, setWarranty] = useState<any | null>(null);
+    const [warranty, setWarranty] = useState<WarrantyFormData | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -42,15 +58,18 @@ const WarrantyDetails = ({ warrantyId, setActiveComponent }: { warrantyId: strin
             </button>
             <h1 className="text-2xl font-bold text-black text-center mb-6">Warranty Details</h1>
             <div className="grid grid-cols-2 gap-4 text-black [&>p]:text-black [&>p>strong]:text-black">
-                <p><strong>ID:</strong> {warranty.warranty_id}</p>
                 <p><strong>Product Name:</strong> {warranty.product_name}</p>
                 <p><strong>Manufacturer:</strong> {warranty.product_manufacturer}</p>
                 <p><strong>Type:</strong> {warranty.product_type}</p>
                 <p><strong>Serial Number:</strong> {warranty.product_serial_number}</p>
                 <p><strong>Warranty Period:</strong> {warranty.warranty_period} Months</p>
                 <p><strong>Status:</strong> {warranty.status}</p>
+                <p><strong>Can Renew:</strong> {warranty.can_renew ? "Yes" : "No"}</p>
+                <p><strong>Coverage:</strong> {warranty.coverage}</p>
                 <p><strong>Purchase Date:</strong> {warranty.purchase_date}</p>
                 <p><strong>Expiration Date:</strong> {warranty.expiration_date}</p>
+                {warranty.notes && <p><strong>Notes:</strong> {warranty.notes}</p>}
+                <p><strong>Uploaded at: </strong> {new Date(warranty.uploaded_at).toISOString().split('T')[0]}</p>
             </div>
             <div className="flex justify-between mt-6">
                 <button onClick={() => setActiveComponent(`edit-warranty-${warranty.warranty_id}`)}
