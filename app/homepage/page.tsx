@@ -10,14 +10,31 @@ import { createClient } from "@/utils/supabase/client";
 import Dashboard from "../components/Dashboard";
 import Account from "../components/Account";
 import WarrantyDetails from "@/app/components/WarrantyDetails";
-import WarrantyInsertForm from "@/app/components/WarrantyInsertForm";
+import WarrantyInsertForm, { WarrantyFormData } from "@/app/components/WarrantyInsertForm";
 import WarrantyUpload from "@/app/components/WarrantyUpload";
 import { EditWarrantyForm } from "@/app/components/EditWarrantyForm";
 import UploadSelect from "@/app/components/UploadSelect";
 import Calendar from "@/app/components/Calendar";
 import Notifications from "@/app/components/Notifications";
 import { User } from "@supabase/supabase-js";
+import { CheckWarrantyForm } from "../components/CheckWarrantyForm";
 //import {createClient} from "@/utils/supabase/server";
+
+// Add this type definition
+// type WarrantyFormData = {
+//     // Define your warranty form fields here
+//     product_name?: string;
+//     product_type?: string;
+//     warranty_period?: number;
+//     purchase_date?: string;
+//     expiration_date?: string;
+//     product_manufacturer?: string;
+//     product_serial_number?: string;
+//     coverage?: string;
+//     status?: string;
+//     can_renew?: boolean;
+//     notes?: string;
+// };
 
 export default function Home() {
 
@@ -41,6 +58,7 @@ export default function Home() {
     }, [getUser]);
 
     const [activeComponent, setActiveComponent] = useState("dashboard");
+    const [preFilledData, setPreFilledData] = useState<Partial<WarrantyFormData>>({});
 
     const renderComponent = () => {
         if (activeComponent.startsWith("warranty-details-")) {
@@ -66,11 +84,13 @@ export default function Home() {
 
              */
             case "warranty-form":
-                return <WarrantyInsertForm setActiveComponent={setActiveComponent} />
+                return <WarrantyInsertForm setActiveComponent={setActiveComponent} preFilledData={preFilledData} />
             case "warranty-upload":
                 return <WarrantyUpload setActiveComponent={setActiveComponent} />
             case "warranty-form-select":
                 return <UploadSelect setActiveComponent={setActiveComponent} />
+            case "warranty-check":
+                return <CheckWarrantyForm setActiveComponent={setActiveComponent} />
             case "warranty-ai":
                 return <ChatBot />
             case "account":

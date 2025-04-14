@@ -1,9 +1,10 @@
 'use client';
 
-import {useForm} from 'react-hook-form';
-import {createWarranty } from '@/app/warranty/actions';
+import { useForm } from 'react-hook-form';
+import { createWarranty } from '@/app/warranty/actions';
+import { useEffect } from 'react';
 
-type WarrantyFormData = {
+export type WarrantyFormData = {
     product_name: string;
     product_type: string;
     warranty_period: number;
@@ -17,8 +18,23 @@ type WarrantyFormData = {
     notes?: string;
 };
 
-const WarrantyInsertForm= ({ setActiveComponent }: { setActiveComponent: (component: string) => void }) => {
-    const {register, handleSubmit, formState: {errors}} = useForm<WarrantyFormData>();
+interface WarrantyInsertFormProps {
+    setActiveComponent: (component: string) => void;
+    preFilledData: Partial<WarrantyFormData>;
+}
+
+const WarrantyInsertForm = ({ setActiveComponent, preFilledData }: WarrantyInsertFormProps) => {
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm<WarrantyFormData>({
+        defaultValues: preFilledData as WarrantyFormData
+    });
+
+    useEffect(() => {
+        if (preFilledData) {
+            Object.entries(preFilledData).forEach(([key, value]) => {
+                setValue(key as keyof WarrantyFormData, value as any);
+            });
+        }
+    }, [preFilledData, setValue]);
 
     return (
         <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-md">

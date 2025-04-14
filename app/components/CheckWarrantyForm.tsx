@@ -1,46 +1,56 @@
-'use client';
+'use client'
 
-import { createClient } from '@/utils/supabase/client';
-import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
-import { updateWarranty } from '@/app/warranty/actions';
+import { createClient } from '@/utils/supabase/client'
+import { useForm } from 'react-hook-form'
+import { useCallback, useEffect, useState } from 'react'
+import { cleanUpWarranty, createWarranty } from '@/app/warranty/actions'
+import { User } from '@supabase/supabase-js'
 
 interface CheckWarrantyFormProps {
-    warranty_id: string;
-    user_id: string;
-    setActiveComponent: (component: string) => void;
+    setActiveComponent: (component: string) => void
 }
 
 interface WarrantyData {
-    product_name: string;
-    product_type: string;
-    warranty_period: number;
-    purchase_date: string;
-    expiration_date: string;
-    product_manufacturer: string;
-    product_serial_number: string;
-    coverage: string;
-    status: string;
-    can_renew: boolean;
-    notes?: string;
-    updated_at: string;
+    product_name: string
+    product_type: string
+    warranty_period: number
+    purchase_date: string
+    expiration_date: string
+    product_manufacturer: string
+    product_serial_number: string
+    coverage: string
+    status: string
+    can_renew: boolean
+    notes?: string
+    updated_at: string
 }
 
-export function CheckWarrantyForm({ warranty_id, user_id, setActiveComponent }: CheckWarrantyFormProps) {
-    const supabase = createClient();
-    const { register, handleSubmit, setValue } = useForm<WarrantyData>();
-    const [loading, setLoading] = useState(true);
+export function CheckWarrantyForm({ setActiveComponent }: CheckWarrantyFormProps) {
+    const supabase = createClient()
+    const { register, handleSubmit, setValue } = useForm<WarrantyData>()
+    const [loading, setLoading] = useState(true)
+    const [user, setUser] = useState<User | null>(null)
+
+    const getUser = useCallback(async () => {
+        const { data: { user }, error } = await supabase.auth.getUser()
+        if (error) {
+            console.error('Error fetching user:', error)
+        } else {
+            setUser(user)
+        }
+    }, [supabase])
 
     useEffect(() => {
         async function fetchWarranty() {
+            if (!user) return
             const { data, error } = await supabase
                 .from('warranties_check')
                 .select('*')
-                .eq('user_id', user_id)
+                .eq('user_id', user.id)
                 .single();
 
             if (error) {
-                console.error('Error fetching warranty:', error);
+                console.error('Error fetching warranty:', error.message);
                 return;
             }
 
@@ -51,16 +61,21 @@ export function CheckWarrantyForm({ warranty_id, user_id, setActiveComponent }: 
         }
 
         fetchWarranty();
-    }, [warranty_id, setValue, supabase, user_id]);
+    }, [user?.id, setValue, supabase]);
 
-    if (loading) return <p className="text-black text-center">Loading warranty details...</p>;
+    useEffect(() => {
+        getUser()
+    }, [getUser])
+
+    if (loading) return <p className="text-black text-center">Loading warranty details...</p>
 
     return (
         <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-md text-black">
             <h1 className="text-2xl font-bold text-center mb-6 text-black">Please Double Check The Following Information:</h1>
             <form onSubmit={handleSubmit((data) => {
-                updateWarranty(data, warranty_id);
-                setActiveComponent(`warranty-details-${warranty_id}`);
+                cleanUpWarranty(user?.id as string)
+                createWarranty(data, "warranties")
+                setActiveComponent("dashboard")
             })} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4 [&>label]:text-black">
                     <label className="block">
@@ -113,11 +128,11 @@ export function CheckWarrantyForm({ warranty_id, user_id, setActiveComponent }: 
                     <textarea {...register("notes")} className="w-full p-2 border border-gray-300 rounded bg-white text-black"></textarea>
                 </label>
                 <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Submit</button>
-                <button onClick={() => setActiveComponent(`warranty-details-${warranty_id}`)}
+                <button onClick={() => setActiveComponent("dashboard")}
                         className="w-full bg-gray-300 text-black rounded p-2 hover:bg-gray-400">
                     Cancel
                 </button>
             </form>
         </div>
-    );
+    )
 }
