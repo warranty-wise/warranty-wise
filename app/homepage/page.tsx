@@ -14,6 +14,7 @@ import WarrantyInsertForm, { WarrantyFormData } from "@/app/components/WarrantyI
 import WarrantyUpload from "@/app/components/WarrantyUpload";
 import {EditWarrantyForm} from "@/app/components/EditWarrantyForm";
 import UploadSelect from "@/app/components/UploadSelect";
+import { CheckWarrantyForm } from "../components/CheckWarrantyForm";
 //import {createClient} from "@/utils/supabase/server";
 
 // Add this type definition
@@ -67,9 +68,11 @@ export default function Home() {
             case "warranty-form":
                 return <WarrantyInsertForm setActiveComponent={setActiveComponent} preFilledData={preFilledData} />
             case "warranty-upload":
-                return <WarrantyUpload setActiveComponent={setActiveComponent} setPreFilledData={setPreFilledData} />
+                return <WarrantyUpload setActiveComponent={setActiveComponent} />
             case "warranty-form-select":
                 return <UploadSelect setActiveComponent={setActiveComponent} />
+            case "warranty-check":
+                return <CheckWarrantyForm setActiveComponent={setActiveComponent} />
             case "warranty-ai":
                 return <ChatBot />
             case "account":

@@ -50,12 +50,12 @@ export function AccountForm() {
     }, [user, supabase])
 
     useEffect(() => {
-        getUser();
-    }, [getUser]);
+        getUser()
+    }, [getUser])
 
     useEffect(() => {
-        if (user) getProfile();
-    }, [user, getProfile]);
+        if (user) getProfile()
+    }, [user, getProfile])
 
     async function updateProfile() {
         try {

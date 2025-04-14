@@ -6,14 +6,14 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { createWorker } from "tesseract.js"
 import {useForm} from "react-hook-form";
 import { WarrantyFormData } from './WarrantyInsertForm'
+import { createWarranty } from "../warranty/actions"
 
 // Update the props to include setPreFilledData
 interface WarrantyUploadProps {
     setActiveComponent: (component: string) => void;
-    setPreFilledData: React.Dispatch<React.SetStateAction<Partial<WarrantyFormData>>>;
 }
 
-const WarrantyUpload = ({ setActiveComponent, setPreFilledData }: WarrantyUploadProps) => {
+const WarrantyUpload = ({ setActiveComponent }: WarrantyUploadProps) => {
     const [files, setFiles] = useState<File[]>([])
     const [ocrResults, setOcrResults] = useState<string[]>([])
     const [isProcessing, setIsProcessing] = useState(false)
@@ -50,6 +50,7 @@ const WarrantyUpload = ({ setActiveComponent, setPreFilledData }: WarrantyUpload
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                 },
                 body: JSON.stringify({ text }),
             })
@@ -82,18 +83,16 @@ const WarrantyUpload = ({ setActiveComponent, setPreFilledData }: WarrantyUpload
                 const processedData = await processWithOpenAI(data.text)
 
                 if (processedData) {
-                    // Update pre-filled data in parent component
-                    setPreFilledData(processedData as Partial<WarrantyFormData>)
+                    createWarranty(processedData, "warranties_check")
                 }
             } catch (error) {
-                console.error("OCR Error:", error)
                 results.push(`File: ${file.name}\nError processing file.`)
             }
         }
 
         setOcrResults(results)
         setIsProcessing(false)
-        setActiveComponent("warranty-form") // Switch to the insert form after processing
+        setActiveComponent("warranty-check")
     }
 
     return (
