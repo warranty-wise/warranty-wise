@@ -4,12 +4,21 @@ import { useState, useEffect } from "react"
 import { Button } from "@mui/material"
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { createWorker } from "tesseract.js"
+import {useForm} from "react-hook-form";
+import { WarrantyFormData } from './WarrantyInsertForm'
+import { createWarranty } from "../warranty/actions"
 
-const WarrantyUpload = ({ setActiveComponent }: { setActiveComponent: (component: string) => void }) => {
+// Update the props to include setPreFilledData
+interface WarrantyUploadProps {
+    setActiveComponent: (component: string) => void;
+}
+
+const WarrantyUpload = ({ setActiveComponent }: WarrantyUploadProps) => {
     const [files, setFiles] = useState<File[]>([])
     const [ocrResults, setOcrResults] = useState<string[]>([])
     const [isProcessing, setIsProcessing] = useState(false)
     const [worker, setWorker] = useState<Tesseract.Worker | null>(null)
+    const { setValue } = useForm<WarrantyFormData>()
 
     // create the tesseract worker when the page loads
     useEffect(() => {
@@ -35,7 +44,29 @@ const WarrantyUpload = ({ setActiveComponent }: { setActiveComponent: (component
         }
     }
 
-    // process the files and extract text from them
+    const processWithOpenAI = async (text: string) => {
+        try {
+            const response = await fetch('/api/process-warranty', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({ text }),
+            })
+
+            if (!response.ok) {
+                throw new Error('Failed to process with OpenAI')
+            }
+
+            const data = await response.json()
+            return data
+        } catch (error) {
+            console.error('Error processing with OpenAI:', error)
+            return null
+        }
+    }
+
     const handleSubmit = async () => {
         if (!worker) return
         setIsProcessing(true)
@@ -46,20 +77,22 @@ const WarrantyUpload = ({ setActiveComponent }: { setActiveComponent: (component
 
             try {
                 const { data } = await worker.recognize(imageUrl)
-                results.push(`File: ${file.name}\n${data.text}`)
-                results.push("-----")
+                results.push(data.text)
+
+                // Process with OpenAI
+                const processedData = await processWithOpenAI(data.text)
+
+                if (processedData) {
+                    createWarranty(processedData, "warranties_check")
+                }
             } catch (error) {
-                console.error("OCR Error:", error)
                 results.push(`File: ${file.name}\nError processing file.`)
-                results.push("-----")
             }
         }
 
-        console.log(results)
-
-        // temp: set the results to be displayed
         setOcrResults(results)
         setIsProcessing(false)
+        setActiveComponent("warranty-check")
     }
 
     return (

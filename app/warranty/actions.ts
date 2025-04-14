@@ -33,7 +33,6 @@ export async function createWarranty(data: WarrantyFormData, tableName: string) 
 
         // store user id
         const user_id = userData.user.id 
-        console.log('User ID:', user_id)
 
         // validate table name
         if (!isValidTableName(tableName)) {
@@ -130,5 +129,16 @@ export async function deleteWarranty(warranty_id: string, tableName: string) {
         }
     } catch (error) {
         console.error('Error deleting warranty:', error)
+    }
+}
+
+export async function cleanUpWarranty(user_id: string) {
+    const { error } = await supabase
+        .from('warranties_check')
+        .delete()
+        .eq('user_id', user_id)
+    if (error) {
+        console.error('Error cleaning up warranty:', error)
+        alert('Error cleaning up warranty!')
     }
 }
