@@ -1,6 +1,7 @@
 'use client'
 
 import { createClient } from "@/utils/supabase/client";
+import { addCalendarEvent } from "@/app/calendar/actions";
 
 interface WarrantyFormData {
     product_name: string;
@@ -45,7 +46,7 @@ export async function createWarranty(data: WarrantyFormData, tableName: string) 
         const formattedExpirationDate = new Date(data.expiration_date).toISOString().split('T')[0]
 
         // insert new warranty
-        const { error } = await supabase
+        const { data: insertedData, error } = await supabase
             .from(tableName)
             .insert([
                 {
@@ -63,7 +64,16 @@ export async function createWarranty(data: WarrantyFormData, tableName: string) 
                     uploaded_at: new Date().toISOString(),
                     notes: data.notes,
                 },
-            ])        
+            ])
+            .select()
+            
+        if (insertedData && insertedData.length > 0) {
+            try {
+                await addCalendarEvent(insertedData[0].warranty_id, user_id)
+            } catch (eventError) {
+                console.error('Error adding calendar event:', eventError)
+            }
+        }
         if (error) {
             console.error('Supabase Error:', error.code, error.message, error.details);
             alert(`Error: ${error.message}`);            
