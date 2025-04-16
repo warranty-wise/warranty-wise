@@ -10,7 +10,6 @@ import { createClient } from "@/utils/supabase/client";
 import Dashboard from "../components/Dashboard";
 import Account from "../components/Account";
 import WarrantyDetails from "@/app/components/WarrantyDetails";
-import WarrantyInsertForm, { WarrantyFormData } from "@/app/components/WarrantyInsertForm";
 import WarrantyUpload from "@/app/components/WarrantyUpload";
 import { EditWarrantyForm } from "@/app/components/EditWarrantyForm";
 import UploadSelect from "@/app/components/UploadSelect";
@@ -58,7 +57,6 @@ export default function Home() {
     }, [getUser]);
 
     const [activeComponent, setActiveComponent] = useState("dashboard");
-    const [preFilledData, setPreFilledData] = useState<Partial<WarrantyFormData>>({});
 
     const renderComponent = () => {
         if (activeComponent.startsWith("warranty-details-")) {
@@ -83,8 +81,6 @@ export default function Home() {
                 return <WarrantyClaim />;
 
              */
-            case "warranty-form":
-                return <WarrantyInsertForm setActiveComponent={setActiveComponent} preFilledData={preFilledData} />
             case "warranty-upload":
                 return <WarrantyUpload setActiveComponent={setActiveComponent} />
             case "warranty-form-select":
@@ -96,9 +92,8 @@ export default function Home() {
             case "account":
                 return <Account />
             case "calendar":
-                return <Calendar setActiveComponent={setActiveComponent}/>
+                return <Calendar />
             case "notification":
-                console.log(user)
                 return <Notifications user={user} setActiveComponent={setActiveComponent} />
             case "dashboard":
             default:

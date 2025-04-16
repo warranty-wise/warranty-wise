@@ -67,6 +67,7 @@ export async function createWarranty(data: WarrantyFormData, tableName: string) 
             .select()
             
         if (insertedData && insertedData.length > 0) {
+            console.log(insertedData)
             try {
                 await addCalendarEvent(insertedData[0].warranty_id, user_id)
             } catch (eventError) {

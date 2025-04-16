@@ -15,10 +15,6 @@ export async function addCalendarEvent(warranty_id: string, user_id: string) {
                     warranty_id: warranty_id,
                 }
             ])
-
-        if (error) {
-            throw error
-        }
     } catch (error) {
         console.error('Error creating calendar event:', error)
         throw error

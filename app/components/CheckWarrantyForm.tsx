@@ -3,7 +3,7 @@
 import { createClient } from '@/utils/supabase/client'
 import { useForm } from 'react-hook-form'
 import { useCallback, useEffect, useState } from 'react'
-import { cleanUpWarranty, createWarranty } from '@/app/warranty/actions'
+import { cleanUpWarranty, createWarranty, deleteWarranty } from '@/app/warranty/actions'
 import { User } from '@supabase/supabase-js'
 
 interface CheckWarrantyFormProps {
@@ -61,7 +61,7 @@ export function CheckWarrantyForm({ setActiveComponent }: CheckWarrantyFormProps
         }
 
         fetchWarranty();
-    }, [user?.id, setValue, supabase]);
+    }, [user, setValue, supabase]);
 
     useEffect(() => {
         getUser()
@@ -128,8 +128,12 @@ export function CheckWarrantyForm({ setActiveComponent }: CheckWarrantyFormProps
                     <textarea {...register("notes")} className="w-full p-2 border border-gray-300 rounded bg-white text-black"></textarea>
                 </label>
                 <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Submit</button>
-                <button onClick={() => setActiveComponent("dashboard")}
-                        className="w-full bg-gray-300 text-black rounded p-2 hover:bg-gray-400">
+                <button onClick={() => {
+                    cleanUpWarranty(user?.id as string)
+                    setActiveComponent("dashboard")
+                }
+                }
+                    className="w-full bg-gray-300 text-black rounded p-2 hover:bg-gray-400">
                     Cancel
                 </button>
             </form>

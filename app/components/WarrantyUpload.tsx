@@ -4,8 +4,6 @@ import { useState, useEffect } from "react"
 import { Button } from "@mui/material"
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { createWorker } from "tesseract.js"
-import {useForm} from "react-hook-form";
-import { WarrantyFormData } from './WarrantyInsertForm'
 import { createWarranty } from "../warranty/actions"
 
 // Update the props to include setPreFilledData
@@ -18,7 +16,6 @@ const WarrantyUpload = ({ setActiveComponent }: WarrantyUploadProps) => {
     const [ocrResults, setOcrResults] = useState<string[]>([])
     const [isProcessing, setIsProcessing] = useState(false)
     const [worker, setWorker] = useState<Tesseract.Worker | null>(null)
-    const { setValue } = useForm<WarrantyFormData>()
 
     // create the tesseract worker when the page loads
     useEffect(() => {
@@ -86,7 +83,7 @@ const WarrantyUpload = ({ setActiveComponent }: WarrantyUploadProps) => {
                     createWarranty(processedData, "warranties_check")
                 }
             } catch (error) {
-                results.push(`File: ${file.name}\nError processing file.`)
+                results.push(`File: ${file.name}\nError processing file. ${String(error)}`)
             }
         }
 

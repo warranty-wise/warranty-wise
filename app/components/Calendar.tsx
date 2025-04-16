@@ -2,7 +2,7 @@
 import { createClient } from "@/utils/supabase/client";
 import { useCallback, useEffect, useState } from "react";
 
-const Calendar = ({ setActiveComponent }: { setActiveComponent: (component: string) => void }) => {
+const Calendar = () => {
     const supabase = createClient()
     interface Warranty {
         warranty_id: string
