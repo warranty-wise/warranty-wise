@@ -2,7 +2,6 @@
 
 import { useForm } from 'react-hook-form';
 import { createWarranty } from '@/app/warranty/actions';
-import { useEffect } from 'react';
 
 export type WarrantyFormData = {
     product_name: string;
@@ -20,21 +19,11 @@ export type WarrantyFormData = {
 
 interface WarrantyInsertFormProps {
     setActiveComponent: (component: string) => void;
-    preFilledData: Partial<WarrantyFormData>;
 }
 
-const WarrantyInsertForm = ({ setActiveComponent, preFilledData }: WarrantyInsertFormProps) => {
-    const { register, handleSubmit, formState: { errors }, setValue } = useForm<WarrantyFormData>({
-        defaultValues: preFilledData as WarrantyFormData
+const WarrantyInsertForm = ({ setActiveComponent }: WarrantyInsertFormProps) => {
+    const { register, handleSubmit, formState: { errors } } = useForm<WarrantyFormData>({
     });
-
-    useEffect(() => {
-        if (preFilledData) {
-            Object.entries(preFilledData).forEach(([key, value]) => {
-                setValue(key as keyof WarrantyFormData, value as any);
-            });
-        }
-    }, [preFilledData, setValue]);
 
     return (
         <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-md">
@@ -110,7 +99,8 @@ const WarrantyInsertForm = ({ setActiveComponent, preFilledData }: WarrantyInser
                     <textarea {...register("notes")}
                               className="w-full p-2 border border-gray-300 rounded bg-white text-black"></textarea>
                 </label>
-                <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Submit
+                <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
+                    Submit
                 </button>
                 <button onClick={() => setActiveComponent("dashboard")}
                         className="w-full bg-gray-300 text-black rounded p-2 hover:bg-gray-400">

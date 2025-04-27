@@ -24,12 +24,6 @@ const Sidebar = ({setActiveComponent}) => {
                         Dashboard
                     </li>
                     <li
-                        className={`p-4 font-bold rounded cursor-pointer hover:bg-blue-700 ${activePage === "calendar" ? "bg-blue-700" : ""}`}
-                        onClick={() => handleNavigation("calendar")}
-                    >
-                        Calendar
-                    </li>
-                    <li
                         className={`p-4 font-bold rounded cursor-pointer hover:bg-blue-700 ${activePage === "warranty-info" ? "bg-blue-700" : ""}`}
                         onClick={() => handleNavigation("warranty-info")}
                     >
@@ -40,12 +34,6 @@ const Sidebar = ({setActiveComponent}) => {
                         onClick={() => handleNavigation("warranty-ai")}
                     >
                         Warranty AI
-                    </li>
-                    <li
-                        className={`p-4 font-bold rounded cursor-pointer hover:bg-blue-700 ${activePage === "warranty-claim" ? "bg-blue-700" : ""}`}
-                        onClick={() => handleNavigation("warranty-claim")}
-                    >
-                        Warranty Claim
                     </li>
                 </ul>
             </div>

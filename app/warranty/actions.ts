@@ -37,7 +37,7 @@ export async function createWarranty(data: WarrantyFormData, tableName: string) 
 
         // validate table name
         if (!isValidTableName(tableName)) {
-            throw new Error(`Invalid table name: ${tableName}. Allowed table names are: ${allowedTableNames.join(', ')}`)
+            throw new Error(`Invalid table name: ${tableName}.`)
         }
 
         // format date correctly
@@ -66,8 +66,7 @@ export async function createWarranty(data: WarrantyFormData, tableName: string) 
             ])
             .select()
             
-        if (insertedData && insertedData.length > 0) {
-            console.log(insertedData)
+        if (tableName == "warranties" && insertedData && insertedData.length > 0) {
             try {
                 await addCalendarEvent(insertedData[0].warranty_id, user_id)
             } catch (eventError) {

@@ -1,6 +1,6 @@
 'use client'
-import {createClient} from "@/utils/supabase/client";
-import {useCallback, useEffect, useState} from "react";
+import { createClient } from "@/utils/supabase/client";
+import { useCallback, useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
@@ -17,6 +17,7 @@ const Dashboard = ({ setActiveComponent }: { setActiveComponent: (component: str
     }
 
     const [data, setData] = useState<Warranty[]>([])
+    const [searchResults, setSearchResults] = useState<Warranty[]>([])
 
     const getWarranty = useCallback(async () => {
         try {
@@ -48,34 +49,56 @@ const Dashboard = ({ setActiveComponent }: { setActiveComponent: (component: str
         getWarranty()
     }, [getWarranty]);
 
-    return(
+    const handleSearch = (query: string) => {
+        if (query.trim() !== "") {
+            const results = data.filter((item) =>
+                item.product_name.toLowerCase().includes(query.toLowerCase()) ||
+                item.product_manufacturer.toLowerCase().includes(query.toLowerCase())
+            )
+            setSearchResults(results)
+        } else {
+            setSearchResults(data)
+        }
+    }
+
+    return (
         <>
             <div className="grid grid-cols-3">
                 <h1 className="text-2xl font-bold text-gray-600 m-5">Your Warranties</h1>
-                <div className="p-2 mb-4" style={{display: "flex", flexFlow: "nowrap", justifyContent: "center", alignItems: "center"}}>
-                    <SearchBar query={undefined} setQuery={undefined} />
+                <div className="p-2 mb-4" style={{ display: "flex", flexFlow: "nowrap", justifyContent: "center", alignItems: "center" }}>
+                    <SearchBar onSearch={handleSearch} />
                 </div>
-                <div style={{display: "flex", flexFlow: "nowrap", justifyContent: "right", alignItems: "right"}}>
+                <div style={{ display: "flex", flexFlow: "nowrap", justifyContent: "right", alignItems: "right" }}>
                     <button className=" mt-3 mb-6 p-2 m-5 bg-blue-600" onClick={() => setActiveComponent("warranty-form-select")}>Insert Warranty</button>
                 </div>
             </div>
             <ul className="bg-white shadow-md rounded-lg p-4">
-                {data.map((item, index) => (
-                    <li key={index} className="p-2 border-b last:border-none">
+                {searchResults.length > 0 ? searchResults.map((warranty) => (
+                    <li key={warranty.warranty_id} className="p-2 border-b last:border-none">
                         <Card>
-                            <CardActionArea
-                                onClick={() => setActiveComponent(`warranty-details-${item.warranty_id}`)}
-                            >
+                            <CardActionArea onClick={() => setActiveComponent("warranty-details")}>
                                 <CardContent>
-                                    <h2 className="text-black">{item.product_name}</h2>
-                                    <p className="text-black">Expires: {item.expiration_date}</p>
-                                    <p className="text-black">Manufacturer: {item.product_manufacturer}</p>
+                                    <h2 className="text-lg text-black font-bold">{warranty.product_name}</h2>
+                                    <p className="text-gray-600">Manufacturer: {warranty.product_manufacturer}</p>
+                                    <p className="text-gray-600">Expiration Date: {new Date(warranty.expiration_date).toLocaleDateString()}</p>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </li>
+                )) : data.map((warranty) => (
+                    <li key={warranty.warranty_id} className="p-2 border-b last:border-none">
+                        <Card>
+                            <CardActionArea onClick={() => setActiveComponent("warranty-details")}>
+                                <CardContent>
+                                    <h2 className="text-lg text-black font-bold">{warranty.product_name}</h2>
+                                    <p className="text-gray-600">Manufacturer: {warranty.product_manufacturer}</p>
+                                    <p className="text-gray-600">Expiration Date: {new Date(warranty.expiration_date).toLocaleDateString()}</p>
                                 </CardContent>
                             </CardActionArea>
                         </Card>
                     </li>
                 ))}
-            </ul>
+            </ul>                
         </>
     )
 };

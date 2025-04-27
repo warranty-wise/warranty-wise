@@ -17,6 +17,7 @@ import Calendar from "@/app/components/Calendar";
 import Notifications from "@/app/components/Notifications";
 import { User } from "@supabase/supabase-js";
 import { CheckWarrantyForm } from "../components/CheckWarrantyForm";
+import WarrantyInsertForm from "../components/WarrantyInsertForm";
 //import {createClient} from "@/utils/supabase/server";
 
 // Add this type definition
@@ -81,6 +82,8 @@ export default function Home() {
                 return <WarrantyClaim />;
 
              */
+            case "warranty-form":
+                return <WarrantyInsertForm setActiveComponent={setActiveComponent} />
             case "warranty-upload":
                 return <WarrantyUpload setActiveComponent={setActiveComponent} />
             case "warranty-form-select":

@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import { FaUserCircle, FaRegBell } from "react-icons/fa";
+import { FaUserCircle,  } from "react-icons/fa";
 import { RxDividerVertical } from "react-icons/rx";
 import { useRouter } from "next/navigation";
 import { signout } from "../signout/actions";
+import { BiCalendar } from "react-icons/bi";
 
 const Header = ({ setActiveComponent }: { setActiveComponent: (component: string) => void }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -31,10 +32,9 @@ const Header = ({ setActiveComponent }: { setActiveComponent: (component: string
     return (
         <header className="bg-white text-white p-6 flex items-center justify-between w-full h-20 border">
             <div className="ml-auto">
-                <button onClick={ () => setActiveComponent("notification") } className="relative flex items-center rounded-full text-sm bg-white">
+                <button onClick={ () => setActiveComponent("calendar") } className="relative flex items-center rounded-full text-sm bg-white">
                     <span className="absolute -inset-1.5"></span>
-                    <span className="sr-only">Open notifications</span>
-                    <FaRegBell className="size-8 invert" />
+                    <BiCalendar className="size-10 invert"/>
                 </button>
             </div>
             <div>
@@ -74,13 +74,6 @@ const Header = ({ setActiveComponent }: { setActiveComponent: (component: string
                             role="menuitem"
                         >
                             Account Info
-                        </button>
-                        <button
-                            onClick={() => handlePageNavigation('/settings')}
-                            className="block w-full text-left px-4 py-2 text-sm bg-white text-gray-700 hover:bg-gray-100"
-                            role="menuitem"
-                        >
-                            Settings
                         </button>
                         <button
                             onClick={() => {
