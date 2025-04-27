@@ -44,39 +44,91 @@ const WarrantyDetails = ({ warrantyId, setActiveComponent }: { warrantyId: strin
     }, [warrantyId, supabase]);
 
     if (loading) {
-        return <p className="text-black text-center">Loading...</p>;
+        return <p className="text-center text-black">Loading...</p>;
     }
 
     if (!warranty) {
-        return <p className="text-black text-center">Warranty not found.</p>;
+        return <p className="text-center text-red-500">Warranty not found.</p>;
     }
 
     return (
-        <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md">
-            <button onClick={() => setActiveComponent("dashboard")} className="mb-4 p-2 bg-gray-300 text-black rounded hover:bg-gray-400">
-                ← Back to Dashboard
-            </button>
-            <h1 className="text-2xl font-bold text-black text-center mb-6">Warranty Details</h1>
-            <div className="grid grid-cols-2 gap-4 text-black [&>p]:text-black [&>p>strong]:text-black">
-                <p><strong>Product Name:</strong> {warranty.product_name}</p>
-                <p><strong>Manufacturer:</strong> {warranty.product_manufacturer}</p>
-                <p><strong>Type:</strong> {warranty.product_type}</p>
-                <p><strong>Serial Number:</strong> {warranty.product_serial_number}</p>
-                <p><strong>Warranty Period:</strong> {warranty.warranty_period} Months</p>
-                <p><strong>Status:</strong> {warranty.status}</p>
-                <p><strong>Can Renew:</strong> {warranty.can_renew ? "Yes" : "No"}</p>
-                <p><strong>Coverage:</strong> {warranty.coverage}</p>
-                <p><strong>Purchase Date:</strong> {warranty.purchase_date}</p>
-                <p><strong>Expiration Date:</strong> {warranty.expiration_date}</p>
-                {warranty.notes && <p><strong>Notes:</strong> {warranty.notes}</p>}
-                <p><strong>Uploaded at: </strong> {new Date(warranty.uploaded_at).toISOString().split('T')[0]}</p>
-            </div>
-            <div className="flex justify-between mt-6">
-                <button onClick={() => setActiveComponent(`edit-warranty-${warranty.warranty_id}`)}
-                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                    Edit
+        <div className="max-w-5xl mx-auto p-8 bg-white rounded-2xl shadow-lg space-y-10 text-black">
+            {/* Back Button */}
+            <div className="flex items-center">
+                <button
+                    onClick={() => setActiveComponent("dashboard")}
+                    className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-black rounded-lg hover:bg-gray-300 transition"
+                >
+                    ← Back
                 </button>
-                <DeleteButton id={warranty.warranty_id} setActiveComponent={setActiveComponent}/>
+            </div>
+
+            {/* Title */}
+            <h1 className="text-4xl font-bold text-center text-blue-600">Warranty Details</h1>
+
+            {/* Warranty Info */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 justify-items-center text-center">
+                <div className="w-full">
+                    <p className="font-semibold text-black">Product Name</p>
+                    <p className="text-black">{warranty.product_name}</p>
+                </div>
+                <div className="w-full">
+                    <p className="font-semibold text-black">Manufacturer</p>
+                    <p className="text-black">{warranty.product_manufacturer}</p>
+                </div>
+                <div className="w-full">
+                    <p className="font-semibold text-black">Type</p>
+                    <p className="text-black">{warranty.product_type}</p>
+                </div>
+                <div className="w-full">
+                    <p className="font-semibold text-black">Serial Number</p>
+                    <p className="text-black">{warranty.product_serial_number}</p>
+                </div>
+                <div className="w-full">
+                    <p className="font-semibold text-black">Warranty Period</p>
+                    <p className="text-black">{warranty.warranty_period} Months</p>
+                </div>
+                <div className="w-full">
+                    <p className="font-semibold text-black">Status</p>
+                    <p className="text-black">{warranty.status}</p>
+                </div>
+                <div className="w-full">
+                    <p className="font-semibold text-black">Renewable</p>
+                    <p className="text-black">{warranty.can_renew ? "Yes" : "No"}</p>
+                </div>
+                <div className="w-full">
+                    <p className="font-semibold text-black">Coverage</p>
+                    <p className="text-black">{warranty.coverage}</p>
+                </div>
+                <div className="w-full">
+                    <p className="font-semibold text-black">Purchase Date</p>
+                    <p className="text-black">{new Date(warranty.purchase_date).toLocaleDateString()}</p>
+                </div>
+                <div className="w-full">
+                    <p className="font-semibold text-black">Expiration Date</p>
+                    <p className="text-black">{new Date(warranty.expiration_date).toLocaleDateString()}</p>
+                </div>
+                {warranty.notes && (
+                    <div className="w-full md:col-span-2">
+                        <p className="font-semibold text-black">Notes</p>
+                        <p className="text-black">{warranty.notes}</p>
+                    </div>
+                )}
+                <div className="w-full md:col-span-2">
+                    <p className="font-semibold text-black">Uploaded At</p>
+                    <p className="text-black">{new Date(warranty.uploaded_at).toLocaleDateString()}</p>
+                </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex justify-center gap-6 mt-10">
+                <button
+                    onClick={() => setActiveComponent(`edit-warranty-${warranty.warranty_id}`)}
+                    className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                >
+                    Edit Warranty
+                </button>
+                <DeleteButton id={warranty.warranty_id} setActiveComponent={setActiveComponent} />
             </div>
         </div>
     );
