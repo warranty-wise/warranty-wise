@@ -54,7 +54,7 @@ const Header = ({ setActiveComponent }: { setActiveComponent: (component: string
                 >
                     <span className="absolute -inset-1.5"></span>
                     <span className="sr-only">Open user menu</span>
-                    <FaUserCircle className="text-4xl invert" />
+                    <FaUserCircle className="text-4xl invert"/>
                 </button>
 
                 {/* Dropdown Menu - Only show when `isDropdownOpen` is true */}
