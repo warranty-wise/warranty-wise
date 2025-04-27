@@ -76,7 +76,7 @@ const Dashboard = ({ setActiveComponent }: { setActiveComponent: (component: str
                 {searchResults.length > 0 ? searchResults.map((warranty) => (
                     <li key={warranty.warranty_id} className="p-2 border-b last:border-none">
                         <Card>
-                            <CardActionArea onClick={() => setActiveComponent("warranty-details")}>
+                            <CardActionArea onClick={() => setActiveComponent(`warranty-details-${warranty.warranty_id}`)}>
                                 <CardContent>
                                     <h2 className="text-lg text-black font-bold">{warranty.product_name}</h2>
                                     <p className="text-gray-600">Manufacturer: {warranty.product_manufacturer}</p>
@@ -88,7 +88,7 @@ const Dashboard = ({ setActiveComponent }: { setActiveComponent: (component: str
                 )) : data.map((warranty) => (
                     <li key={warranty.warranty_id} className="p-2 border-b last:border-none">
                         <Card>
-                            <CardActionArea onClick={() => setActiveComponent("warranty-details")}>
+                            <CardActionArea onClick={() => setActiveComponent(`warranty-details-${warranty.warranty_id}`)}>
                                 <CardContent>
                                     <h2 className="text-lg text-black font-bold">{warranty.product_name}</h2>
                                     <p className="text-gray-600">Manufacturer: {warranty.product_manufacturer}</p>
