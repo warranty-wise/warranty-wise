@@ -1,45 +1,49 @@
 'use client'
+
 import { createClient } from "@/utils/supabase/client";
 import { useCallback, useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Calendar = () => {
-    const supabase = createClient()
+    const supabase = createClient();
+
     interface Warranty {
-        warranty_id: string
-        product_name: string
-        expiration_date: string
-        product_manufacturer: string
+        warranty_id: string;
+        product_name: string;
+        expiration_date: string;
+        product_manufacturer: string;
     }
 
-    const [data, setData] = useState<Warranty[]>([])
+    const [data, setData] = useState<Warranty[]>([]);
+    const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
 
     const getWarranty = useCallback(async () => {
         try {
-            const { data: userData, error: userError } = await supabase.auth.getUser()
+            const { data: userData, error: userError } = await supabase.auth.getUser();
             if (userError || !userData?.user) {
-                throw new Error('User not authenticated')
+                throw new Error('User not authenticated');
             }
-            const user_id = userData.user.id
+            const user_id = userData.user.id;
             const { data, error, status } = await supabase
                 .from('warranties')
                 .select('warranty_id, product_name, expiration_date, product_manufacturer')
-                .eq('user_id', user_id as string)
+                .eq('user_id', user_id as string);
 
             if (error && status !== 406) {
-                throw error
+                throw error;
             }
 
             if (data) {
-                setData(data)
+                setData(data);
             }
         } catch (error) {
-            alert('Error loading warranty data!')
-            return error
+            alert('Error loading warranty data!');
+            console.error(error);
         }
-    }, [supabase])
+    }, [supabase]);
 
     useEffect(() => {
-        getWarranty()
+        getWarranty();
     }, [getWarranty]);
 
     const months = [
@@ -51,7 +55,10 @@ const Calendar = () => {
         return data
             .filter(warranty => {
                 const expirationDate = new Date(warranty.expiration_date);
-                return expirationDate.getMonth() === monthIndex;
+                return (
+                    expirationDate.getMonth() === monthIndex &&
+                    expirationDate.getFullYear() === selectedYear
+                );
             })
             .sort((a, b) => {
                 const dateA = new Date(a.expiration_date);
@@ -60,33 +67,66 @@ const Calendar = () => {
             });
     };
 
+    const incrementYear = () => {
+        setSelectedYear((prev) => prev + 1);
+    };
+
+    const decrementYear = () => {
+        setSelectedYear((prev) => prev - 1);
+    };
+
     return (
-        <div className="p-4 text-black">
-            {/*<h1 className="text-2xl font-bold mb-4 text-black text-center">Warranty Calendar</h1>*/}
-            <div className="flex justify-center">
-                <div className="grid grid-cols-3 gap-4 text-black max-w-6xl">
-                    {months.map((month, index) => (
-                        <div key={month} className="border border-gray-400 text-black w-96 h-48 flex flex-col rounded-lg shadow-sm">
-                            <h2 className="font-semibold p-2 text-black bg-gray-100 border-b border-gray-400 rounded-t-lg">{month}</h2>
-                            <div className="overflow-auto p-2 flex-grow">
-                                <ul>
+        <div className="p-6 text-gray-900">
+            <h1 className="text-3xl font-bold mb-6 text-center text-black">Warranty Expiration Calendar</h1>
+
+            {/* Year Controller */}
+            <div className="flex items-center justify-center gap-4 mb-8">
+                <button
+                    onClick={decrementYear}
+                    className="p-2 rounded-full bg-gray-300 hover:bg-gray-400 transition"
+                    aria-label="Previous Year"
+                >
+                    <ChevronLeft className="h-6 w-6" />
+                </button>
+                <div className="text-2xl font-semibold text-black">{selectedYear}</div>
+                <button
+                    onClick={incrementYear}
+                    className="p-2 rounded-full bg-gray-300 hover:bg-gray-400 transition"
+                    aria-label="Next Year"
+                >
+                    <ChevronRight className="h-6 w-6" />
+                </button>
+            </div>
+
+            {/* Calendar Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
+                {months.map((month, index) => (
+                    <div
+                        key={month}
+                        className="flex flex-col border border-gray-300 rounded-xl shadow hover:shadow-lg transition p-4 bg-white"
+                    >
+                        <h2 className="text-lg font-semibold mb-3 text-black">{month}</h2>
+                        <div className="flex-grow overflow-y-auto">
+                            {getWarrantiesForMonth(index).length > 0 ? (
+                                <ul className="space-y-3">
                                     {getWarrantiesForMonth(index).map(warranty => (
-                                        <li key={warranty.warranty_id} className="text-sm mb-1">
-                                            <span className="font-medium text-black">{warranty.product_name}</span>
-                                            <br />
-                                            <span className="text-xs text-gray-500">
+                                        <li key={warranty.warranty_id}>
+                                            <div className="text-sm font-medium text-black">{warranty.product_name}</div>
+                                            <div className="text-xs text-gray-500">
                                                 Expires: {new Date(warranty.expiration_date).toLocaleDateString()}
-                                            </span>
+                                            </div>
                                         </li>
                                     ))}
                                 </ul>
-                            </div>
+                            ) : (
+                                <p className="text-sm text-gray-400 italic">No warranties expiring</p>
+                            )}
                         </div>
-                    ))}
-                </div>
+                    </div>
+                ))}
             </div>
         </div>
-    )
+    );
 };
 
 export default Calendar;

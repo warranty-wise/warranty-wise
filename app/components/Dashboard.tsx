@@ -69,7 +69,7 @@ const Dashboard = ({ setActiveComponent }: { setActiveComponent: (component: str
                     <SearchBar onSearch={handleSearch} />
                 </div>
                 <div style={{ display: "flex", flexFlow: "nowrap", justifyContent: "right", alignItems: "right" }}>
-                    <button className=" mt-3 mb-6 p-2 m-5 bg-blue-600" onClick={() => setActiveComponent("warranty-form-select")}>Insert Warranty</button>
+                    <button className=" mt-3 mb-6 p-2 m-5 bg-blue-600 font-bold" onClick={() => setActiveComponent("warranty-form-select")}>Insert Warranty</button>
                 </div>
             </div>
             <ul className="bg-white shadow-md rounded-lg p-4">
