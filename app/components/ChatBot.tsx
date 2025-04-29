@@ -12,6 +12,19 @@ export default function ChatBox() {
 
     const chatbotRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    const scrollToBottom = () => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
+    useEffect(() => {
+        if (isOpen) {
+            scrollToBottom();
+        }
+    }, [isOpen, messages]);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -101,6 +114,7 @@ export default function ChatBox() {
                             </div>
                         ))}
                         {loading && <div className="italic text-gray-500">Assistant is typing...</div>}
+                        <div ref={messagesEndRef} />
                     </div>
                     <div className="flex items-end gap-2 mt-2">
                         <TextareaAutosize
