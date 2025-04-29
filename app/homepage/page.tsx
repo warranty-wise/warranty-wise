@@ -109,8 +109,9 @@ export default function Home() {
             <Sidebar setActiveComponent={setActiveComponent} />
             <div className="flex flex-col flex-1">
                 <Header setActiveComponent={setActiveComponent} />
-                <main className="flex-1 p-6 overflow-auto bg-gray-100">
+                <main className="flex-1 p-6 overflow-auto bg-gray-100 relative">
                     {renderComponent()}
+                    <ChatBot />
                 </main>
             </div>
         </div>
