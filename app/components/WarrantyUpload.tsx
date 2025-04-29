@@ -4,16 +4,16 @@ import { useState, useEffect } from "react"
 import { Button } from "@mui/material"
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { createWorker } from "tesseract.js"
-import { createWarranty } from "../warranty/actions"
+import { createWarranty, insertDocument } from "../warranty/actions"
 
 // Update the props to include setPreFilledData
 interface WarrantyUploadProps {
-    setActiveComponent: (component: string) => void;
+    setActiveComponent: (component: string) => void
+    user_id: string
 }
 
-const WarrantyUpload = ({ setActiveComponent }: WarrantyUploadProps) => {
+const WarrantyUpload = ({ user_id,  setActiveComponent }: WarrantyUploadProps) => {
     const [files, setFiles] = useState<File[]>([])
-    const [ocrResults, setOcrResults] = useState<string[]>([])
     const [isProcessing, setIsProcessing] = useState(false)
     const [worker, setWorker] = useState<Tesseract.Worker | null>(null)
 
@@ -67,29 +67,26 @@ const WarrantyUpload = ({ setActiveComponent }: WarrantyUploadProps) => {
     const handleSubmit = async () => {
         if (!worker) return
         setIsProcessing(true)
-        const results: string[] = []
 
         for (const file of files) {
             const imageUrl = URL.createObjectURL(file)
+            insertDocument(user_id, file)
 
             try {
                 const { data } = await worker.recognize(imageUrl)
-                results.push(data.text)
 
                 // Process with OpenAI
                 const processedData = await processWithOpenAI(data.text)
 
                 if (processedData) {
                     createWarranty(processedData, "warranties_check")
+                    setIsProcessing(false)
+                    setActiveComponent("warranty-check-" + file.name)
                 }
             } catch (error) {
-                results.push(`File: ${file.name}\nError processing file. ${String(error)}`)
+                console.error('Error processing file:', error)
             }
         }
-
-        setOcrResults(results)
-        setIsProcessing(false)
-        setActiveComponent("warranty-check")
     }
 
     return (
@@ -134,15 +131,6 @@ const WarrantyUpload = ({ setActiveComponent }: WarrantyUploadProps) => {
             >
                 Cancel
             </button>
-
-            {ocrResults.length > 0 && (
-                <div className="mt-6 w-full p-4 border rounded-md bg-gray-100 max-h-96 overflow-y-auto">
-                    <h2 className="font-bold mb-2 text-black">OCR Results:</h2>
-                    {ocrResults.map((result, index) => (
-                        <p key={index} className="text-black whitespace-pre-wrap">{result}</p>
-                    ))}
-                </div>
-            )}
         </div>
     )
 }

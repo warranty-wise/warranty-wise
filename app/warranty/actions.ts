@@ -33,7 +33,7 @@ export async function createWarranty(data: WarrantyFormData, tableName: string) 
         }
 
         // store user id
-        const user_id = userData.user.id 
+        const user_id = userData.user.id
 
         // validate table name
         if (!isValidTableName(tableName)) {
@@ -65,7 +65,9 @@ export async function createWarranty(data: WarrantyFormData, tableName: string) 
                 },
             ])
             .select()
-            
+            .single()
+
+
         if (tableName == "warranties" && insertedData && insertedData.length > 0) {
             try {
                 await addCalendarEvent(insertedData[0].warranty_id, user_id)
@@ -75,7 +77,7 @@ export async function createWarranty(data: WarrantyFormData, tableName: string) 
         }
         if (error) {
             console.error('Supabase Error:', error.code, error.message, error.details);
-            alert(`Error: ${error.message}`);            
+            alert(`Error: ${error.message}`);
             throw error
         }
         if (tableName === 'warranties') {
@@ -150,5 +152,44 @@ export async function cleanUpWarranty(user_id: string) {
     if (error) {
         console.error('Error cleaning up warranty:', error)
         alert('Error cleaning up warranty!')
+    }
+}
+
+export async function insertDocument(user_id: string, file: File) {
+    const safeFileName = file.name.replace(/\s+/g, '-')
+    const filePath = `public/${user_id}/${safeFileName}`
+    console.log('File path:', filePath)
+    try {
+        const { error } = await supabase
+            .storage
+            .from('warranty-documents')
+            .upload(filePath, file, {
+                cacheControl: '3600',
+            })
+        if (error) {
+            console.error(`Error: ${error.message}`)
+            throw error
+        }
+    } catch (error) {
+        console.error('Error uploading document:', error)
+    }
+}
+
+export async function deleteDocument(user_id: string, fileName: string) {
+    const safeFileName = fileName.replace(/\s+/g, '-')
+    const filePath = `public/${user_id}/${safeFileName}`
+    console.log('File path:', filePath)
+    try {
+        const { data, error } = await supabase
+            .storage
+            .from('warranty-documents')
+            .remove([filePath])
+        if (error) {
+            console.error(`Error: ${error.message}`)
+            throw error
+        }
+        console.log("deleted", data)
+    } catch (error) {
+        console.error('Error deleting document:', error)
     }
 }

@@ -70,6 +70,11 @@ export default function Home() {
             return <EditWarrantyForm warranty_id={warrantyId} setActiveComponent={setActiveComponent} />;
         }
 
+        if (activeComponent.startsWith("warranty-check-")) {
+            const filePath = activeComponent.replace("warranty-check-", "");
+            return <CheckWarrantyForm filePath={filePath} setActiveComponent={setActiveComponent} />;
+        }
+
         switch (activeComponent) {
             /*
             case "calendar":
@@ -85,11 +90,9 @@ export default function Home() {
             case "warranty-form":
                 return <WarrantyInsertForm setActiveComponent={setActiveComponent} />
             case "warranty-upload":
-                return <WarrantyUpload setActiveComponent={setActiveComponent} />
+                return <WarrantyUpload user_id={user?.id || ""} setActiveComponent={setActiveComponent} />
             case "warranty-form-select":
                 return <UploadSelect setActiveComponent={setActiveComponent} />
-            case "warranty-check":
-                return <CheckWarrantyForm setActiveComponent={setActiveComponent} />
             case "warranty-ai":
                 return <ChatBot />
             case "account":

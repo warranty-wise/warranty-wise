@@ -3,11 +3,12 @@
 import { createClient } from '@/utils/supabase/client'
 import { useForm } from 'react-hook-form'
 import { useCallback, useEffect, useState } from 'react'
-import { cleanUpWarranty, createWarranty } from '@/app/warranty/actions'
+import { cleanUpWarranty, createWarranty, deleteDocument, insertDocument } from '@/app/warranty/actions'
 import { User } from '@supabase/supabase-js'
 
 interface CheckWarrantyFormProps {
     setActiveComponent: (component: string) => void
+    filePath?: string
 }
 
 interface WarrantyData {
@@ -25,7 +26,7 @@ interface WarrantyData {
     updated_at: string
 }
 
-export function CheckWarrantyForm({ setActiveComponent }: CheckWarrantyFormProps) {
+export function CheckWarrantyForm({ filePath, setActiveComponent }: CheckWarrantyFormProps) {
     const supabase = createClient()
     const { register, handleSubmit, setValue } = useForm<WarrantyData>()
     const [loading, setLoading] = useState(true)
@@ -42,6 +43,7 @@ export function CheckWarrantyForm({ setActiveComponent }: CheckWarrantyFormProps
 
     useEffect(() => {
         async function fetchWarranty() {
+            await new Promise(resolve => setTimeout(resolve, 500))
             if (!user) return
             const { data, error } = await supabase
                 .from('warranties_check')
@@ -130,6 +132,7 @@ export function CheckWarrantyForm({ setActiveComponent }: CheckWarrantyFormProps
                 <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Submit</button>
                 <button onClick={() => {
                     cleanUpWarranty(user?.id as string)
+                    deleteDocument(user?.id as string, filePath as string)
                     setActiveComponent("dashboard")
                 }
                 }
