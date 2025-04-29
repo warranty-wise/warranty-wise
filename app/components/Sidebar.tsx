@@ -29,12 +29,6 @@ const Sidebar = ({setActiveComponent}) => {
                     >
                         Warranty Info
                     </li>
-                    <li
-                        className={`p-4 font-bold rounded cursor-pointer hover:bg-blue-700 ${activePage === "warranty-ai" ? "bg-blue-700" : ""}`}
-                        onClick={() => handleNavigation("warranty-ai")}
-                    >
-                        Warranty AI
-                    </li>
                 </ul>
             </div>
         </aside>
