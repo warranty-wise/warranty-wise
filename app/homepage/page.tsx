@@ -18,6 +18,7 @@ import Notifications from "@/app/components/Notifications";
 import { User } from "@supabase/supabase-js";
 import { CheckWarrantyForm } from "../components/CheckWarrantyForm";
 import WarrantyInsertForm from "../components/WarrantyInsertForm";
+import WarrantyDocuments from "../components/WarrantyDocuments";
 //import {createClient} from "@/utils/supabase/server";
 
 // Add this type definition
@@ -93,6 +94,8 @@ export default function Home() {
                 return <WarrantyUpload user_id={user?.id || ""} setActiveComponent={setActiveComponent} />
             case "warranty-form-select":
                 return <UploadSelect setActiveComponent={setActiveComponent} />
+            case "warranty-documents":
+                return <WarrantyDocuments user_id={user?.id || ""} setActiveComponent={setActiveComponent} />
             case "warranty-ai":
                 return <ChatBot />
             case "account":

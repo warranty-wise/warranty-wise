@@ -1,8 +1,8 @@
-import { SetStateAction, useState} from "react";
+import { SetStateAction, useState } from "react";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
-const Sidebar = ({setActiveComponent}) => {
+const Sidebar = ({ setActiveComponent }) => {
     const [activePage, setActivePage] = useState("dashboard");
 
     const handleNavigation = (component: SetStateAction<string>) => {
@@ -28,6 +28,12 @@ const Sidebar = ({setActiveComponent}) => {
                         onClick={() => handleNavigation("warranty-info")}
                     >
                         Warranty Info
+                    </li>
+                    <li
+                        className={`p-4 font-bold rounded cursor-pointer hover:bg-blue-700 ${activePage === "warranty-documents" ? "bg-blue-700" : ""}`}
+                        onClick={() => handleNavigation("warranty-documents")}
+                    >
+                        Warranty Documents
                     </li>
                     <li
                         className={`p-4 font-bold rounded cursor-pointer hover:bg-blue-700 ${activePage === "warranty-ai" ? "bg-blue-700" : ""}`}
