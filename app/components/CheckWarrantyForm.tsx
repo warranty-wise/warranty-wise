@@ -3,7 +3,7 @@
 import { createClient } from '@/utils/supabase/client'
 import { useForm } from 'react-hook-form'
 import { useCallback, useEffect, useState } from 'react'
-import { cleanUpWarranty, createWarranty, deleteDocument, insertDocument } from '@/app/warranty/actions'
+import { cleanUpWarranty, createWarranty, deleteDocument } from '@/app/warranty/actions'
 import { User } from '@supabase/supabase-js'
 
 interface CheckWarrantyFormProps {

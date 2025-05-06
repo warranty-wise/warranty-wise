@@ -2,7 +2,7 @@
 import { createClient } from "@/utils/supabase/client"
 import { useEffect, useState } from "react"
 import { FileObject } from '@supabase/storage-js'
-import { Trash2, TrashIcon } from "lucide-react"
+import { Trash2 } from "lucide-react"
 import { confirmDelete } from "@/utils/swalUtil"
 import Swal from "sweetalert2"
 

@@ -2,7 +2,6 @@
 
 import { useForm } from 'react-hook-form';
 import { createWarranty } from '@/app/warranty/actions';
-import { showSuccessAlert } from '@/utils/swalUtil';
 
 export type WarrantyFormData = {
     product_name: string;
