@@ -18,3 +18,13 @@ export const confirmDelete = async (): Promise<boolean> => {
 
   return result.isConfirmed
 }
+
+export const showSuccessAlert = async (message: string) => {
+  await Swal.fire({
+    title: 'Success!',
+    text: message,
+    icon: 'success',
+    timer: 2000,
+    showConfirmButton: false,
+  })
+}

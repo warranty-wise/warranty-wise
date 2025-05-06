@@ -2,6 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { createWarranty } from '@/app/warranty/actions';
+import { showSuccessAlert } from '@/utils/swalUtil';
 
 export type WarrantyFormData = {
     product_name: string;
@@ -29,8 +30,8 @@ const WarrantyInsertForm = ({ setActiveComponent }: WarrantyInsertFormProps) => 
         <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-md">
             <h1 className="text-2xl font-bold text-center mb-6 text-black">Insert Warranty Form</h1>
             <form onSubmit={handleSubmit((data) => {
-                createWarranty(data, 'warranties');
-                setActiveComponent("dashboard"); })} className="space-y-4">
+                createWarranty(data, 'warranties')
+                setActiveComponent("dashboard")})} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4 text-black [&>label]:text-black">
                     <label className="block">
                         Product Name:
