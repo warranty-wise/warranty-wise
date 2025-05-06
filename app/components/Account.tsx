@@ -103,11 +103,6 @@ export function AccountForm() {
                 <button onClick={updateProfile} disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md mt-2 disabled:opacity-50">
                     {loading ? 'Updating...' : 'Update Profile'}
                 </button>
-                <form action="/signout" method="post">
-                    <button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md mt-2">
-                        Sign out
-                    </button>
-                </form>
             </div>
         </div>
     )

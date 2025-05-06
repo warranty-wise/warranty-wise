@@ -24,12 +24,6 @@ const Sidebar = ({ setActiveComponent }) => {
                         Dashboard
                     </li>
                     <li
-                        className={`p-4 font-bold rounded cursor-pointer hover:bg-blue-700 ${activePage === "warranty-info" ? "bg-blue-700" : ""}`}
-                        onClick={() => handleNavigation("warranty-info")}
-                    >
-                        Warranty Info
-                    </li>
-                    <li
                         className={`p-4 font-bold rounded cursor-pointer hover:bg-blue-700 ${activePage === "warranty-documents" ? "bg-blue-700" : ""}`}
                         onClick={() => handleNavigation("warranty-documents")}
                     >
