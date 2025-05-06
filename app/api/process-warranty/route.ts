@@ -14,7 +14,8 @@ export async function POST(req: Request) {
             messages: [
                 {
                     role: "system",
-                    content: "You are a helpful assistant that extracts warranty information from text. Please extract the following information: product_name, product_type, warranty_period, purchase_date, expiration_date, product_manufacturer, product_serial_number, coverage, status, can_renew. Return the information in JSON format, specifically for the dates, format it so that it is a Date object in javascript, but can still be parsed by JSON."
+                    content: "You are a helpful assistant that extracts warranty information from text. Please extract the following information: product_name, product_type, warranty_period, purchase_date, expiration_date, product_manufacturer, product_serial_number, coverage, status, can_renew." 
+                    + "Return the information in JSON format, specifically for the dates, format it so that it is a Date object in typescript, but can still be parsed by JSON."
                 },
                 {
                     role: "user",

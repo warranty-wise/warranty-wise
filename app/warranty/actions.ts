@@ -2,6 +2,7 @@
 
 import { createClient } from "@/utils/supabase/client";
 import { addCalendarEvent } from "@/app/calendar/actions";
+import { showSuccessAlert } from "@/utils/swalUtil";
 
 interface WarrantyFormData {
     product_name: string;
@@ -81,7 +82,7 @@ export async function createWarranty(data: WarrantyFormData, tableName: string) 
             throw error
         }
         if (tableName === 'warranties') {
-            alert('Warranty created successfully')
+            showSuccessAlert('Warranty created successfully')
         }
     } catch (error) {
         console.error('Error creating warranty:', error)
@@ -117,7 +118,7 @@ export async function updateWarranty(data: WarrantyFormData, warranty_id: string
             alert(`Error: ${error.message}`)
             throw error
         }
-        alert('Warranty updated successfully')
+        showSuccessAlert('Warranty updated successfully')
     } catch (error) {
         console.error('Error updating warranty:', error)
     }
