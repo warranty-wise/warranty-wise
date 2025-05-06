@@ -70,7 +70,6 @@ const WarrantyUpload = ({ user_id,  setActiveComponent }: WarrantyUploadProps) =
 
         for (const file of files) {
             const imageUrl = URL.createObjectURL(file)
-            insertDocument(user_id, file)
 
             try {
                 const { data } = await worker.recognize(imageUrl)
@@ -86,6 +85,7 @@ const WarrantyUpload = ({ user_id,  setActiveComponent }: WarrantyUploadProps) =
             } catch (error) {
                 console.error('Error processing file:', error)
             }
+            insertDocument(user_id, file)
         }
     }
 
