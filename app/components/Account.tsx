@@ -68,7 +68,6 @@ export function AccountForm() {
                 updated_at: new Date().toISOString(),
             })
             if (error) throw error
-            alert('Profile updated!')
         } catch (error) {
             console.error('Error updating the data:', error)
             alert('Error updating the data!')

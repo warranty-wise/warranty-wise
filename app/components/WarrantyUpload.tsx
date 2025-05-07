@@ -80,12 +80,13 @@ const WarrantyUpload = ({ user_id,  setActiveComponent }: WarrantyUploadProps) =
                 if (processedData) {
                     createWarranty(processedData, "warranties_check")
                     setIsProcessing(false)
+                    insertDocument(user_id, file)
                     setActiveComponent("warranty-check-" + file.name)
                 }
             } catch (error) {
                 console.error('Error processing file:', error)
+                return
             }
-            insertDocument(user_id, file)
         }
     }
 
